@@ -24,4 +24,12 @@ class Square {
 
     return this
   }
+
+  clone() {
+    return new Square(this.x, this.y)
+  }
+
+  move(dir) {
+    return new Square(this.x + dir.x, this.y + dir.y)
+  }
 }
