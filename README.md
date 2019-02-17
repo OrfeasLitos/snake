@@ -1,3 +1,3 @@
-### 2048
+### Snake
 
-A simple of snake. Just visit `index.html` from your browser to play!
+A simple snake implementation. Just visit `index.html` from your browser to play!
