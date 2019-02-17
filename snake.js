@@ -7,6 +7,7 @@ const Y_BLOCKS = Math.floor(H / N)
 class World {
   constructor() {
     this.squares = []
+    this.dir = new Square(0, 1)
     this.head = new Square(
       Math.floor(X_BLOCKS/2),
       Math.floor(Y_BLOCKS/2)
@@ -19,7 +20,10 @@ class World {
     }
   }
 
-  step(dir) {
+  step() {
+    this.head = this.head.move(this.dir)
+    this.squares.push(this.head.clone())
+    this.squares.shift()
   }
 }
 
