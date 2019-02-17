@@ -1,8 +1,3 @@
-//const game = new Game()
-//game.populate()
-//drawGame(game)
-//document.onkeydown = onkeydown
-
 const SPEED = 0.001
 
 async function delay(ms) {
