@@ -1,8 +1,8 @@
 const INIT_SIZE = 4
 const X_BLOCKS = 100
 
-const N = W / X_BLOCKS
-const Y_BLOCKS = H * N
+const N = Math.floor(W / X_BLOCKS)
+const Y_BLOCKS = Math.floor(H / N)
 
 class World {
   constructor() {
