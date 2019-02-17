@@ -27,6 +27,10 @@ function renderFood(food) {
   ctx.stroke()
 }
 
+function printScore(score) {
+  // TODO
+}
+
 function draw(world) {
   // TODO: optimize by drawing entire
   // snake in one go and filling once
@@ -35,4 +39,5 @@ function draw(world) {
     renderTail(square)
   }
   renderFood(world.food)
+  printScore(world.score)
 }

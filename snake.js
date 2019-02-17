@@ -9,6 +9,7 @@ class World {
     this.squares = []
     this.direction = new Vector(0, 1)
     this.movesQueue = []
+    this.score = 0
 
     this.head = new Vector(
       Math.floor(X_BLOCKS/2),
