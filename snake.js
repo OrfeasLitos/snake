@@ -20,6 +20,23 @@ class World {
         this.head.x - i, this.head.y
       ))
     }
+    this.produceFood()
+  }
+
+  getRandomSquare() {
+    return new Vector(
+      Math.floor(Math.random() * X_BLOCKS),
+      Math.floor(Math.random() * Y_BLOCKS)
+    )
+  }
+
+  produceFood() {
+    this.food = this.getRandomSquare()
+    while (this.squares.some(
+      square => square.equals(this.food)
+    )) {
+      this.food = this.getRandomSquare()
+    }
   }
 
   step() {
