@@ -11,6 +11,7 @@ function renderTail(square) {
   ctx.lineTo(x + BLOCK_DIST, y)
   ctx.closePath()
   ctx.fill()
+  ctx.stroke()
 }
 
 function renderFood(food) {
