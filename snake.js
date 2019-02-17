@@ -7,9 +7,15 @@ const Y_BLOCKS = Math.floor(H / N)
 class World {
   constructor() {
     this.squares = []
+    this.head = new Square(
+      Math.floor(X_BLOCKS/2),
+      Math.floor(Y_BLOCKS/2)
+    )
 
-    for (let i = 0; i < INIT_SIZE; i++) {
-      this.squares.push(new Square(X_BLOCKS/2 - i, Y_BLOCKS/2))
+    for (let i = INIT_SIZE - 1; i >= 0; i--) {
+      this.squares.push(new Square(
+        this.head.x - i, this.head.y
+      ))
     }
   }
 
