@@ -1,5 +1,6 @@
 canvas {
   margin: auto;
+  border: solid 10px;
   display: block;
   position: absolute;
 }

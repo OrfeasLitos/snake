@@ -1,5 +1,15 @@
 const INIT_SIZE = 4
 const X_BLOCKS = 100
+const canvas = document.getElementById('canvas')
+const ctx = canvas.getContext('2d')
+
+// TODO: use jQuery if needed 2 more times
+const border = Number(
+  getComputedStyle(canvas, null)
+  .getPropertyValue('border-left-width').slice(0, -2));
+
+const W = canvas.width = window.innerWidth - 2*border
+const H = canvas.height = window.innerHeight - 2*border
 
 const N = Math.floor(W / X_BLOCKS)
 const Y_BLOCKS = Math.floor(H / N)
