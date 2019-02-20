@@ -53,14 +53,26 @@ class World {
     return food
   }
 
-  step() {
+  advance() {
     if (this.movesQueue.length > 0) {
       this.direction = this.movesQueue.shift()
     }
     this.head = this.head.move(this.direction)
     this.squares.push(this.head.clone())
-    this.squares.shift()
+  }
 
+  maybeEat() {
+    if (this.head.equals(this.food)) {
+     this.score++
+     this.food = this.produceFood()
+    } else { // no food, remove last square
+      this.squares.shift()
+    }
+  }
+
+  step() {
+    this.advance()
+    this.maybeEat()
   }
 
   set dir(dir) {
