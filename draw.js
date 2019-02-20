@@ -1,3 +1,8 @@
+const TEXTSIZE = 30
+
+ctx.font = TEXTSIZE + 'px Arial'
+ctx.textAlign = 'left'
+
 const BLOCK_DIST = W / X_BLOCKS
 
 function renderTail(square) {
@@ -28,7 +33,7 @@ function renderFood(food) {
 }
 
 function printScore(score) {
-  // TODO
+  ctx.fillText(`Score: ${score}`, W - TEXTSIZE * 6, TEXTSIZE)
 }
 
 function draw(world) {
@@ -38,6 +43,6 @@ function draw(world) {
   for (square of world.squares) {
     renderTail(square)
   }
-  renderFood(world.food)
   printScore(world.score)
+  renderFood(world.food)
 }
