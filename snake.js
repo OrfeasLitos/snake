@@ -22,6 +22,17 @@ class World {
     this.direction = new Vector(1, 0)
     this.movesQueue = []
     this.score = 0
+    this.gameOver = false
+
+    this.borders = []
+    for (let i = 0; i < X_BLOCKS; i++) {
+      this.borders.push(new Vector(i, -1))
+      this.borders.push(new Vector(i, Y_BLOCKS))
+    }
+    for (let i = 0; i < Y_BLOCKS; i++) {
+      this.borders.push(new Vector(-1, i))
+      this.borders.push(new Vector(X_BLOCKS, i))
+    }
 
     this.head = new Vector(
       Math.floor(X_BLOCKS/2),
@@ -70,7 +81,21 @@ class World {
     }
   }
 
+  maybeCollide() {
+    if (this.squares.slice(0, -1).some(
+      square => square.equals(this.head)
+    ) || this.borders.some(
+      square => square.equals(this.head)
+    )) {
+      this.gameOver = true
+      if (this.squares[0].equals(this.head)) {
+        this.easterEgg = true
+      }
+    }
+  }
+
   step() {
+    this.maybeCollide()
     this.advance()
     this.maybeEat()
   }

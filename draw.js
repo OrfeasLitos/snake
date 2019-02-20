@@ -46,3 +46,14 @@ function draw(world) {
   printScore(world.score)
   renderFood(world.food)
 }
+
+function gameOver(score, easterEgg) {
+  ctx.textAlign = 'center'
+  ctx.fillStyle = 'red'
+  ctx.fillText(`score: ${score}`, W / 2, (H + TEXTSIZE) / 2)
+  if (easterEgg) {
+    ctx.fillText('Ouroboros!', W / 2, (H - TEXTSIZE) / 2)
+  } else {
+    ctx.fillText('Game Over!', W / 2, (H - TEXTSIZE) / 2)
+  }
+}

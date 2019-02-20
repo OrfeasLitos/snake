@@ -8,7 +8,11 @@ async function play() {
   draw(world)
   await delay(1/SPEED)
   world.step()
-  requestAnimationFrame(play)
+  if (!world.gameOver) {
+    requestAnimationFrame(play)
+  } else {
+  gameOver(world.score, world.easterEgg)
+  }
 }
 
 const world = new World()
