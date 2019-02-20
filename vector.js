@@ -32,4 +32,8 @@ class Vector {
     return false
     }
   }
+
+  toString() {
+    return `{${this.x}, ${this.y}}`
+  }
 }
