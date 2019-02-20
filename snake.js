@@ -1,4 +1,4 @@
-const INIT_SIZE = 4
+const INIT_SNAKE_SIZE = 4
 const X_BLOCKS = 100
 const SPEED = 0.01
 
@@ -19,7 +19,7 @@ const Y_BLOCKS = Math.floor(H / N)
 class World {
   constructor() {
     this.squares = []
-    this.direction = new Vector(0, 1)
+    this.direction = new Vector(1, 0)
     this.movesQueue = []
     this.score = 0
 
@@ -28,7 +28,7 @@ class World {
       Math.floor(Y_BLOCKS/2)
     )
 
-    for (let i = INIT_SIZE - 1; i >= 0; i--) {
+    for (let i = INIT_SNAKE_SIZE - 1; i >= 0; i--) {
       this.squares.push(new Vector(
         this.head.x - i, this.head.y
       ))
