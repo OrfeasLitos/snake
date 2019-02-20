@@ -1,5 +1,7 @@
 const INIT_SIZE = 4
 const X_BLOCKS = 100
+const SPEED = 0.01
+
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
