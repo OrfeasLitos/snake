@@ -31,7 +31,7 @@ class World {
         this.head.x - i, this.head.y
       ))
     }
-    this.produceFood()
+    this.food = this.produceFood()
   }
 
   getRandomSquare() {
@@ -42,12 +42,13 @@ class World {
   }
 
   produceFood() {
-    this.food = this.getRandomSquare()
+    let food = this.getRandomSquare()
     while (this.squares.some(
-      square => square.equals(this.food)
+      square => square.equals(food)
     )) {
-      this.food = this.getRandomSquare()
+      food = this.getRandomSquare()
     }
+    return food
   }
 
   step() {
