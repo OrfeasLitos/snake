@@ -6,12 +6,12 @@ async function delay(ms) {
 
 async function play() {
   draw(world)
-  await delay(1/SPEED)
+  await delay(1 / SPEED)
   world.step()
   if (!world.gameOver) {
     requestAnimationFrame(play)
   } else {
-  gameOver(world.score, world.easterEgg)
+    gameOver(world.score, world.easterEgg)
   }
 }
 

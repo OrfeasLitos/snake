@@ -10,8 +10,8 @@ const border = Number(
   getComputedStyle(canvas, null)
   .getPropertyValue('border-left-width').slice(0, -2));
 
-const W = canvas.width = window.innerWidth - 2*border
-const H = canvas.height = window.innerHeight - 2*border
+const W = canvas.width = window.innerWidth - 2 * border
+const H = canvas.height = window.innerHeight - 2 * border
 
 const N = Math.floor(W / X_BLOCKS)
 const Y_BLOCKS = Math.floor(H / N)
@@ -36,8 +36,8 @@ class World {
     }
 
     this.head = new Vector(
-      Math.floor(X_BLOCKS/2),
-      Math.floor(Y_BLOCKS/2)
+      Math.floor(X_BLOCKS / 2),
+      Math.floor(Y_BLOCKS / 2)
     )
 
     for (let i = INIT_SNAKE_SIZE - 1; i >= 0; i--) {
