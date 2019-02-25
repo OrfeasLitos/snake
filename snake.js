@@ -23,6 +23,7 @@ class World {
     this.movesQueue = []
     this.score = 0
     this.gameOver = false
+    this.isPaused = false
 
     this.borders = []
     for (let i = 0; i < X_BLOCKS; i++) {
@@ -95,6 +96,10 @@ class World {
   }
 
   step() {
+    if (this.isPaused) {
+      return
+    }
+
     this.maybeCollide()
     this.advance()
     this.maybeEat()
@@ -107,5 +112,9 @@ class World {
     if (!prev.add(dir).isZero()) {
       this.movesQueue.push(dir)
     }
+  }
+
+  togglePause() {
+    this.isPaused = !this.isPaused
   }
 }

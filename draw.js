@@ -36,6 +36,12 @@ function printScore(score) {
   ctx.fillText(`Score: ${score}`, W - TEXTSIZE * 6, TEXTSIZE)
 }
 
+function printPaused() {
+  ctx.textAlign = 'center'
+  ctx.fillText('Paused', W / 2, H / 2)
+  ctx.textAlign = 'left'
+}
+
 function draw(world) {
   // TODO: optimize by drawing entire
   // snake in one go and filling once
