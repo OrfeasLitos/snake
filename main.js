@@ -15,7 +15,7 @@ async function play() {
   }
 }
 
-const world = new World()
+let world = new World()
 
 document.onkeydown = (e) => {
   e = e || window.event
@@ -24,6 +24,10 @@ document.onkeydown = (e) => {
   if (key === 80 && // P
       !world.gameOver) { // Pause only running game
     world.togglePause()
+  } else if (key === 78 && // N
+             world.gameOver) { // New game
+    world = new World()
+    play()
   } else if ([37, 38, 39, 40].includes(key) &&
              !world.isPaused) {
     const dir = key - 37

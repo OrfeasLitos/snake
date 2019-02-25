@@ -51,15 +51,20 @@ function draw(world) {
   }
   printScore(world.score)
   renderFood(world.food)
+  if (world.isPaused) {
+    printPaused()
+  }
 }
 
 function gameOver(score, easterEgg) {
   ctx.textAlign = 'center'
   ctx.fillStyle = 'red'
-  ctx.fillText(`score: ${score}`, W / 2, (H + TEXTSIZE) / 2)
-  if (easterEgg) {
-    ctx.fillText('Ouroboros!', W / 2, (H - TEXTSIZE) / 2)
-  } else {
-    ctx.fillText('Game Over!', W / 2, (H - TEXTSIZE) / 2)
-  }
+
+  ctx.fillText(`score: ${score}`, W / 2, H / 2)
+  const msg = easterEgg ? 'Ouroboros!' : 'Game Over!'
+  ctx.fillText(msg, W / 2, (H - 2 * TEXTSIZE) / 2)
+  ctx.fillText('Press N to restart', W / 2, (H + 2 * TEXTSIZE) / 2)
+
+  ctx.fillStyle = 'black'
+  ctx.textAlign = 'left'
 }
