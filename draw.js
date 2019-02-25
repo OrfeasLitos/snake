@@ -6,17 +6,43 @@ ctx.textAlign = 'left'
 const BLOCK_DIST = W / X_BLOCKS
 
 function renderTail(square) {
-  const x = (square.x / X_BLOCKS) * W
-  const y = (square.y / Y_BLOCKS) * H
+  const x = (square.loc.x / X_BLOCKS) * W
+  const y = (square.loc.y / Y_BLOCKS) * H
 
   ctx.beginPath()
   ctx.moveTo(x, y)
-  ctx.lineTo(x, y + BLOCK_DIST)
-  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST)
-  ctx.lineTo(x + BLOCK_DIST, y)
+  if (square.dir.x === 0) {
+    ctx.lineTo(x, y + BLOCK_DIST)
+  } else {
+    ctx.lineTo(x + BLOCK_DIST, y)
+  }
+  ctx.closePath()
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.moveTo(x + BLOCK_DIST, y + BLOCK_DIST)
+  if (square.dir.x === 0) {
+    ctx.lineTo(x + BLOCK_DIST, y)
+  } else {
+    ctx.lineTo(x, y + BLOCK_DIST)
+  }
+  ctx.closePath()
+  ctx.stroke()
+
+  ctx.beginPath()
+  if (square.dir.x === 0) {
+    ctx.moveTo(x, y + BLOCK_DIST / 2)
+    ctx.lineTo(x, y + BLOCK_DIST)
+    ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST / 2)
+    ctx.lineTo(x + BLOCK_DIST, y)
+  } else {
+    ctx.moveTo(x + BLOCK_DIST / 2, y)
+    ctx.lineTo(x + BLOCK_DIST, y)
+    ctx.lineTo(x + BLOCK_DIST / 2, y + BLOCK_DIST)
+    ctx.lineTo(x, y + BLOCK_DIST)
+  }
   ctx.closePath()
   ctx.fill()
-  ctx.stroke()
 }
 
 function renderFood(food) {

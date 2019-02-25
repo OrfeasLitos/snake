@@ -1,6 +1,6 @@
 const INIT_SNAKE_SIZE = 4
 const X_BLOCKS = 100
-const SPEED = 0.05
+const SPEED = 0.03
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -41,9 +41,9 @@ class World {
     )
 
     for (let i = INIT_SNAKE_SIZE - 1; i >= 0; i--) {
-      this.squares.push(new Vector(
-        this.head.x - i, this.head.y
-      ))
+      this.squares.push(new Square(
+        new Vector(this.head.x - i, this.head.y),
+        this.direction.clone()))
     }
     this.food = this.produceFood()
   }
@@ -70,7 +70,8 @@ class World {
       this.direction = this.movesQueue.shift()
     }
     this.head = this.head.move(this.direction)
-    this.squares.push(this.head.clone())
+    this.squares.push(new Square(
+      this.head.clone(), this.direction.clone()))
   }
 
   maybeEat() {
