@@ -43,7 +43,7 @@ class World {
     for (let i = INIT_SNAKE_SIZE - 1; i >= 0; i--) {
       this.squares.push(new Square(
         new Vector(this.head.x - i, this.head.y),
-        this.direction.clone()))
+        this.dir.clone()))
     }
     this.food = this.produceFood()
   }
@@ -69,9 +69,9 @@ class World {
     if (this.movesQueue.length > 0) {
       this.direction = this.movesQueue.shift()
     }
-    this.head = this.head.move(this.direction)
+    this.head = this.head.move(this.dir)
     this.squares.push(new Square(
-      this.head.clone(), this.direction.clone()))
+      this.head.clone(), this.dir.clone()))
   }
 
   maybeEat() {
@@ -108,11 +108,15 @@ class World {
 
   set dir(dir) {
     const prev = (this.movesQueue.length === 0) ?
-      this.direction : this.movesQueue[0]
+      this.dir : this.movesQueue[0]
 
     if (!prev.add(dir).isZero()) {
       this.movesQueue.push(dir)
     }
+  }
+
+  get dir() {
+    return this.direction
   }
 
   togglePause() {
