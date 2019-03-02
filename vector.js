@@ -14,6 +14,8 @@ class Vector {
     return new Vector(this.x + vec.x, this.y + vec.y)
   }
 
+  neg() {
+    return new Vector(-this.x, -this.y)
   }
 
   equals(vec) {
