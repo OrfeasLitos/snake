@@ -28,39 +28,34 @@ function renderTail(square) {
     }
   }
 
+  // draw stripe
   ctx.beginPath()
   ctx.moveTo(x, y)
-  if (square.dir.x === 0) {
-    ctx.lineTo(x, y + BLOCK_DIST)
-  } else {
-    ctx.lineTo(x + BLOCK_DIST, y)
-  }
+  ctx.lineTo(x, y + BLOCK_DIST / 4)
+  ctx.lineTo(x + BLOCK_DIST * 3 / 4, y + BLOCK_DIST)
+  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST)
+  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST * 3 / 4)
+  ctx.lineTo(x + BLOCK_DIST / 4, y)
   ctx.closePath()
   ctx.stroke()
+  ctx.fill()
 
+  // draw top corner
   ctx.beginPath()
-  ctx.moveTo(x + BLOCK_DIST, y + BLOCK_DIST)
-  if (square.dir.x === 0) {
-    ctx.lineTo(x + BLOCK_DIST, y)
-  } else {
-    ctx.lineTo(x, y + BLOCK_DIST)
-  }
+  ctx.moveTo(x + BLOCK_DIST * 3 / 4, y)
+  ctx.lineTo(x + BLOCK_DIST, y)
+  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST / 4)
   ctx.closePath()
   ctx.stroke()
+  ctx.fill()
 
+  // draw bottom corner
   ctx.beginPath()
-  if (square.dir.x === 0) {
-    ctx.moveTo(x, y + BLOCK_DIST / 2)
-    ctx.lineTo(x, y + BLOCK_DIST)
-    ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST / 2)
-    ctx.lineTo(x + BLOCK_DIST, y)
-  } else {
-    ctx.moveTo(x + BLOCK_DIST / 2, y)
-    ctx.lineTo(x + BLOCK_DIST, y)
-    ctx.lineTo(x + BLOCK_DIST / 2, y + BLOCK_DIST)
-    ctx.lineTo(x, y + BLOCK_DIST)
-  }
+  ctx.moveTo(x, y + BLOCK_DIST * 3 / 4)
+  ctx.lineTo(x, y + BLOCK_DIST)
+  ctx.lineTo(x + BLOCK_DIST / 4, y + BLOCK_DIST)
   ctx.closePath()
+  ctx.stroke()
   ctx.fill()
 }
 
