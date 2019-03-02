@@ -1,6 +1,6 @@
 const INIT_SNAKE_SIZE = 4
 const X_BLOCKS = 100
-const SPEED = 0.03
+const SPEED = 0.005
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -51,8 +51,7 @@ class World {
   getRandomSquare() {
     return new Vector(
       Math.floor(Math.random() * X_BLOCKS),
-      Math.floor(Math.random() * Y_BLOCKS)
-    )
+      Math.floor(Math.random() * Y_BLOCKS))
   }
 
   produceFood() {

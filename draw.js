@@ -69,8 +69,6 @@ function printPaused() {
 }
 
 function draw(world) {
-  // TODO: optimize by drawing entire
-  // snake in one go and filling once
   ctx.clearRect(0, 0, W, H)
   for (square of world.squares) {
     renderTail(square)
