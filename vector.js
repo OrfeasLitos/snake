@@ -14,8 +14,6 @@ class Vector {
     return new Vector(this.x + vec.x, this.y + vec.y)
   }
 
-  move(dir) {
-    return this.add(dir)
   }
 
   equals(vec) {
