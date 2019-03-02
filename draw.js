@@ -9,6 +9,25 @@ function renderTail(square) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
 
+  // draw box
+  for (let i of [
+    new Vector(0, 1),  // top
+    new Vector(-1, 0), // left
+    new Vector(0, -1), // bottom
+    new Vector(1, 0)   // right
+  ]) {
+    if(!square.front.equals(i) && !square.back.equals(i)) {
+      ctx.beginPath()
+      ctx.moveTo(
+        x + Math.trunc(i.x - i.y + 1/2) * BLOCK_DIST,
+        y + Math.trunc(i.x + i.y + 1/2) * BLOCK_DIST)
+      ctx.lineTo(
+        x + Math.trunc(i.x + i.y + 1/2) * BLOCK_DIST,
+        y + Math.trunc(-i.x + i.y + 1/2)* BLOCK_DIST)
+      ctx.stroke()
+    }
+  }
+
   ctx.beginPath()
   ctx.moveTo(x, y)
   if (square.dir.x === 0) {
