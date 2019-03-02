@@ -69,6 +69,7 @@ class World {
       this.direction = this.movesQueue.shift()
     }
     this.head = this.head.add(this.dir)
+    this.squares[this.squares.length - 1].front = this.dir.clone()
     this.squares.push(new Square(
       this.head.clone(), this.dir.clone()))
   }
