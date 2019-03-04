@@ -35,17 +35,22 @@ class World {
       this.borders.push(new Vector(X_BLOCKS, i))
     }
 
-    this.head = new Vector(
-      Math.floor(X_BLOCKS / 2),
-      Math.floor(Y_BLOCKS / 2)
-    )
-
     for (let i = INIT_SNAKE_SIZE - 1; i >= 0; i--) {
       this.squares.push(new Square(
-        new Vector(this.head.x - i, this.head.y),
+        new Vector(
+          Math.floor(X_BLOCKS / 2) - i,
+          Math.floor(Y_BLOCKS / 2)),
         this.dir.clone()))
     }
     this.food = this.produceFood()
+  }
+
+  get head() {
+    return this.squares[this.squares.length - 1]
+  }
+
+  set head(square) {
+    this.squares[this.squares.length - 1] = square
   }
 
   getRandomSquare() {
@@ -68,14 +73,13 @@ class World {
     if (this.movesQueue.length > 0) {
       this.direction = this.movesQueue.shift()
     }
-    this.head = this.head.add(this.dir)
-    this.squares[this.squares.length - 1].front = this.dir.clone()
+    this.head.front = this.dir.clone()
     this.squares.push(new Square(
-      this.head.clone(), this.dir.clone()))
+      this.head.loc.add(this.dir), this.dir.clone()))
   }
 
   maybeEat() {
-    if (this.head.equals(this.food)) {
+    if (this.head.loc.equals(this.food)) {
      this.score++
      this.food = this.produceFood()
     } else { // no food, remove last square
@@ -85,12 +89,12 @@ class World {
 
   maybeCollide() {
     if (this.squares.slice(0, -1).some(
-      square => square.equals(this.head)
+      square => square.equals(this.head.loc)
     ) || this.borders.some(
-      square => square.equals(this.head)
+      square => square.equals(this.head.loc)
     )) {
       this.gameOver = true
-      if (this.squares[0].equals(this.head)) {
+      if (this.squares[0].equals(this.head.loc)) {
         this.easterEgg = true
       }
     }
