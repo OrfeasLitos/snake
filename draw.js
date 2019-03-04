@@ -5,11 +5,7 @@ ctx.textAlign = 'left'
 
 const BLOCK_DIST = W / X_BLOCKS
 
-function renderTail(square) {
-  const x = (square.loc.x / X_BLOCKS) * W
-  const y = (square.loc.y / Y_BLOCKS) * H
-
-  // draw box
+function renderBox(square, x, y) {
   for (let i of [
     new Vector(0, 1),  // top
     new Vector(-1, 0), // left
@@ -27,8 +23,9 @@ function renderTail(square) {
       ctx.stroke()
     }
   }
+}
 
-  // draw stripe
+function renderStripe(x, y) {
   ctx.beginPath()
   ctx.moveTo(x, y)
   ctx.lineTo(x, y + BLOCK_DIST / 4)
@@ -39,8 +36,10 @@ function renderTail(square) {
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
+}
 
-  // draw top corner
+function renderCorners(x, y) {
+  // top corner
   ctx.beginPath()
   ctx.moveTo(x + BLOCK_DIST * 3 / 4, y)
   ctx.lineTo(x + BLOCK_DIST, y)
@@ -49,7 +48,7 @@ function renderTail(square) {
   ctx.stroke()
   ctx.fill()
 
-  // draw bottom corner
+  // bottom corner
   ctx.beginPath()
   ctx.moveTo(x, y + BLOCK_DIST * 3 / 4)
   ctx.lineTo(x, y + BLOCK_DIST)
@@ -57,6 +56,15 @@ function renderTail(square) {
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
+}
+
+function renderTail(square) {
+  const x = (square.loc.x / X_BLOCKS) * W
+  const y = (square.loc.y / Y_BLOCKS) * H
+
+  renderBox(square, x, y)
+  renderStripe(x, y)
+  renderCorners(x, y)
 }
 
 function renderFood(food) {
