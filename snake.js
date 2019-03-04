@@ -114,7 +114,8 @@ class World {
     const prev = (this.movesQueue.length === 0) ?
       this.dir : this.movesQueue[0]
 
-    if (!prev.add(dir).isZero()) {
+    if (!prev.add(dir).isZero() &&
+        this.movesQueue.length < 2) {
       this.movesQueue.push(dir)
     }
   }
