@@ -6,6 +6,7 @@ ctx.textAlign = 'left'
 const BLOCK_DIST = W / X_BLOCKS
 
 function renderBox(square, x, y) {
+  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
   for (let i of [
     new Vector(0, 1),  // top
     new Vector(-1, 0), // left
@@ -15,56 +16,136 @@ function renderBox(square, x, y) {
     if(!square.front.equals(i) && !square.back.equals(i)) {
       ctx.beginPath()
       ctx.moveTo(
-        x + Math.trunc(i.x - i.y + 1/2) * BLOCK_DIST,
-        y + Math.trunc(i.x + i.y + 1/2) * BLOCK_DIST)
+        (Math.trunc(i.x - i.y + 1/2) - 1/2) * BLOCK_DIST,
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_DIST)
       ctx.lineTo(
-        x + Math.trunc(i.x + i.y + 1/2) * BLOCK_DIST,
-        y + Math.trunc(-i.x + i.y + 1/2)* BLOCK_DIST)
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_DIST,
+        (Math.trunc(-i.x + i.y + 1/2) - 1/2) * BLOCK_DIST)
       ctx.stroke()
     }
   }
+  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
 }
 
 function renderStripe(x, y) {
+  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
   ctx.beginPath()
-  ctx.moveTo(x, y)
-  ctx.lineTo(x, y + BLOCK_DIST / 4)
-  ctx.lineTo(x + BLOCK_DIST * 3 / 4, y + BLOCK_DIST)
-  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST)
-  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST * 3 / 4)
-  ctx.lineTo(x + BLOCK_DIST / 4, y)
+  ctx.moveTo(-BLOCK_DIST / 2, -BLOCK_DIST / 2)
+  ctx.lineTo(-BLOCK_DIST / 2, -BLOCK_DIST / 4)
+  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST / 2)
+  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST / 2)
+  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST / 4)
+  ctx.lineTo(-BLOCK_DIST / 4, -BLOCK_DIST / 2)
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
+  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
 }
 
-function renderCorners(x, y) {
-  // top corner
+function renderUpperCorner(x, y) {
+  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
   ctx.beginPath()
-  ctx.moveTo(x + BLOCK_DIST * 3 / 4, y)
-  ctx.lineTo(x + BLOCK_DIST, y)
-  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST / 4)
+  ctx.moveTo(BLOCK_DIST / 4, -BLOCK_DIST / 2)
+  ctx.lineTo(BLOCK_DIST / 2, -BLOCK_DIST / 2)
+  ctx.lineTo(BLOCK_DIST / 2, -BLOCK_DIST / 4)
   ctx.closePath()
   ctx.stroke()
+  ctx.fill()
+  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+}
+
+function renderLowerCorner(x, y) {
+  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.beginPath()
+  ctx.moveTo(-BLOCK_DIST / 2, BLOCK_DIST / 4)
+  ctx.lineTo(-BLOCK_DIST / 2, BLOCK_DIST / 2)
+  ctx.lineTo(-BLOCK_DIST / 4, BLOCK_DIST / 2)
+  ctx.closePath()
+  ctx.stroke()
+  ctx.fill()
+  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+}
+
+function renderHead(square) {
+  const x = (square.loc.x / X_BLOCKS) * W
+  const y = (square.loc.y / Y_BLOCKS) * H
+  const x_dir = (square.front.x == 1) ? 0 : square.front.x
+  const y_dir = square.front.y
+
+  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.rotate(Math.PI * (x_dir + y_dir / 2))
+
+  ctx.beginPath()
+  ctx.moveTo(-BLOCK_DIST / 2, -BLOCK_DIST / 2)
+  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (2/3 - 1/2))
+  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST * (2/3 - 1/2))
+  ctx.lineTo(-BLOCK_DIST / 2, BLOCK_DIST / 2)
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.moveTo(BLOCK_DIST / 4, BLOCK_DIST * (2/3 - 1/2))
+  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (2/3 - 1/2))
+  ctx.closePath()
   ctx.fill()
 
-  // bottom corner
   ctx.beginPath()
-  ctx.moveTo(x, y + BLOCK_DIST * 3 / 4)
-  ctx.lineTo(x, y + BLOCK_DIST)
-  ctx.lineTo(x + BLOCK_DIST / 4, y + BLOCK_DIST)
+  ctx.moveTo(-BLOCK_DIST / 2, BLOCK_DIST / 4)
+  ctx.lineTo(-BLOCK_DIST / 2, BLOCK_DIST / 2)
+  ctx.lineTo(-BLOCK_DIST * 5 / 28, BLOCK_DIST * 5 / 14)
   ctx.closePath()
-  ctx.stroke()
   ctx.fill()
+  ctx.stroke()
+
+  ctx.rotate(-Math.PI * (x_dir + y_dir / 2))
+  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
 }
 
 function renderTail(square) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
+  const x_dir = (square.front.x == 1) ? 0 : square.front.x
+  const y_dir = square.front.y
+
+  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.rotate(Math.PI * (x_dir + y_dir / 2))
+
+  ctx.beginPath()
+  ctx.arc(-BLOCK_DIST / 3, -BLOCK_DIST * 3 / 10,
+          BLOCK_DIST / 5, Math.PI / 2, Math.PI * 3 / 2)
+  ctx.moveTo(-BLOCK_DIST / 3, BLOCK_DIST / 2)
+  ctx.arc(-BLOCK_DIST / 3, BLOCK_DIST * 3 / 10,
+          BLOCK_DIST / 5, Math.PI / 2, Math.PI * 3 / 2)
+  ctx.moveTo(BLOCK_DIST / 2, -BLOCK_DIST / 2)
+  ctx.lineTo(-BLOCK_DIST / 3, -BLOCK_DIST / 2)
+  ctx.moveTo(-BLOCK_DIST / 3, -BLOCK_DIST / 10)
+  ctx.lineTo(-BLOCK_DIST / 3, BLOCK_DIST / 10)
+  ctx.moveTo(-BLOCK_DIST / 3, BLOCK_DIST / 2)
+  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST / 2)
+  ctx.stroke()
+
+  ctx.rotate(-Math.PI * (x_dir + y_dir / 2))
+  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+
+  if (square.front.equals(new Vector(1, 0)) || // up
+      square.front.equals(new Vector(0, -1))) { // right
+    renderUpperCorner(x, y)
+  } else { // left or down
+    renderLowerCorner(x, y)
+  }
+}
+
+function renderBody(square) {
+  const x = (square.loc.x / X_BLOCKS) * W
+  const y = (square.loc.y / Y_BLOCKS) * H
 
   renderBox(square, x, y)
   renderStripe(x, y)
-  renderCorners(x, y)
+  renderUpperCorner(x, y)
+  renderLowerCorner(x, y)
 }
 
 function renderFood(food) {
@@ -92,9 +173,11 @@ function printPaused() {
 
 function draw(world) {
   ctx.clearRect(0, 0, W, H)
-  for (square of world.squares) {
-    renderTail(square)
+  renderHead(world.head)
+  for (let i = 1; i < world.squares.length - 1; i++) {
+    renderBody(world.squares[i])
   }
+  renderTail(world.tail)
   printScore(world.score)
   renderFood(world.food)
   if (world.isPaused) {
