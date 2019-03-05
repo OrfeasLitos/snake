@@ -53,6 +53,10 @@ class World {
     this.squares[this.squares.length - 1] = square
   }
 
+  get tail() {
+    return this.squares[0]
+  }
+
   getRandomSquare() {
     return new Vector(
       Math.floor(Math.random() * X_BLOCKS),
