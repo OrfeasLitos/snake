@@ -15,6 +15,7 @@ const H = canvas.height = window.innerHeight - 2 * border
 
 const N = Math.floor(W / X_BLOCKS)
 const Y_BLOCKS = Math.floor(H / N)
+const BLOCK_SIDE = W / X_BLOCKS
 
 class World {
   constructor() {

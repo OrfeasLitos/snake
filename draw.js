@@ -3,10 +3,8 @@ const TEXTSIZE = 30
 ctx.font = TEXTSIZE + 'px Arial'
 ctx.textAlign = 'left'
 
-const BLOCK_DIST = W / X_BLOCKS
-
 function renderBox(square, x, y) {
-  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   for (let i of [
     new Vector(0, 1),  // top
     new Vector(-1, 0), // left
@@ -16,54 +14,54 @@ function renderBox(square, x, y) {
     if(!square.front.equals(i) && !square.back.equals(i)) {
       ctx.beginPath()
       ctx.moveTo(
-        (Math.trunc(i.x - i.y + 1/2) - 1/2) * BLOCK_DIST,
-        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_DIST)
+        (Math.trunc(i.x - i.y + 1/2) - 1/2) * BLOCK_SIDE,
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
       ctx.lineTo(
-        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_DIST,
-        (Math.trunc(-i.x + i.y + 1/2) - 1/2) * BLOCK_DIST)
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE,
+        (Math.trunc(-i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
       ctx.stroke()
     }
   }
-  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 }
 
 function renderStripe(x, y) {
-  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_DIST / 2, -BLOCK_DIST / 2)
-  ctx.lineTo(-BLOCK_DIST / 2, -BLOCK_DIST / 4)
-  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST / 2)
-  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST / 2)
-  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST / 4)
-  ctx.lineTo(-BLOCK_DIST / 4, -BLOCK_DIST / 2)
+  ctx.moveTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
+  ctx.lineTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
+  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 4)
+  ctx.lineTo(-BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
-  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 }
 
 function renderUpperCorner(x, y) {
-  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   ctx.beginPath()
-  ctx.moveTo(BLOCK_DIST / 4, -BLOCK_DIST / 2)
-  ctx.lineTo(BLOCK_DIST / 2, -BLOCK_DIST / 2)
-  ctx.lineTo(BLOCK_DIST / 2, -BLOCK_DIST / 4)
+  ctx.moveTo(BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
-  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 }
 
 function renderLowerCorner(x, y) {
-  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_DIST / 2, BLOCK_DIST / 4)
-  ctx.lineTo(-BLOCK_DIST / 2, BLOCK_DIST / 2)
-  ctx.lineTo(-BLOCK_DIST / 4, BLOCK_DIST / 2)
+  ctx.moveTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 4)
+  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
+  ctx.lineTo(-BLOCK_SIDE / 4, BLOCK_SIDE / 2)
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
-  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 }
 
 function renderHead(square) {
@@ -72,36 +70,36 @@ function renderHead(square) {
   const x_dir = (square.front.x == 1) ? 0 : square.front.x
   const y_dir = square.front.y
 
-  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   ctx.rotate(Math.PI * (x_dir + y_dir / 2))
 
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_DIST / 2, -BLOCK_DIST / 2)
-  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (2/3 - 1/2))
-  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST * (2/3 - 1/2))
-  ctx.lineTo(-BLOCK_DIST / 2, BLOCK_DIST / 2)
+  ctx.moveTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (2/3 - 1/2))
+  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE * (2/3 - 1/2))
+  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
   ctx.stroke()
 
   ctx.beginPath()
-  ctx.moveTo(BLOCK_DIST / 4, BLOCK_DIST * (2/3 - 1/2))
-  ctx.lineTo(BLOCK_DIST / 4, BLOCK_DIST * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST * (2/3 - 1/2))
+  ctx.moveTo(BLOCK_SIDE / 4, BLOCK_SIDE * (2/3 - 1/2))
+  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (1/3 - 1/2))
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (2/3 - 1/2))
   ctx.closePath()
   ctx.fill()
 
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_DIST / 2, BLOCK_DIST / 4)
-  ctx.lineTo(-BLOCK_DIST / 2, BLOCK_DIST / 2)
-  ctx.lineTo(-BLOCK_DIST * 5 / 28, BLOCK_DIST * 5 / 14)
+  ctx.moveTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 4)
+  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
+  ctx.lineTo(-BLOCK_SIDE * 5 / 28, BLOCK_SIDE * 5 / 14)
   ctx.closePath()
   ctx.fill()
   ctx.stroke()
 
   ctx.rotate(-Math.PI * (x_dir + y_dir / 2))
-  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 }
 
 function renderTail(square) {
@@ -110,25 +108,25 @@ function renderTail(square) {
   const x_dir = (square.front.x == 1) ? 0 : square.front.x
   const y_dir = square.front.y
 
-  ctx.translate(x + BLOCK_DIST / 2, y + BLOCK_DIST / 2)
+  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   ctx.rotate(Math.PI * (x_dir + y_dir / 2))
 
   ctx.beginPath()
-  ctx.arc(-BLOCK_DIST / 3, -BLOCK_DIST * 3 / 10,
-          BLOCK_DIST / 5, Math.PI / 2, Math.PI * 3 / 2)
-  ctx.moveTo(-BLOCK_DIST / 3, BLOCK_DIST / 2)
-  ctx.arc(-BLOCK_DIST / 3, BLOCK_DIST * 3 / 10,
-          BLOCK_DIST / 5, Math.PI / 2, Math.PI * 3 / 2)
-  ctx.moveTo(BLOCK_DIST / 2, -BLOCK_DIST / 2)
-  ctx.lineTo(-BLOCK_DIST / 3, -BLOCK_DIST / 2)
-  ctx.moveTo(-BLOCK_DIST / 3, -BLOCK_DIST / 10)
-  ctx.lineTo(-BLOCK_DIST / 3, BLOCK_DIST / 10)
-  ctx.moveTo(-BLOCK_DIST / 3, BLOCK_DIST / 2)
-  ctx.lineTo(BLOCK_DIST / 2, BLOCK_DIST / 2)
+  ctx.arc(-BLOCK_SIDE / 3, -BLOCK_SIDE * 3 / 10,
+          BLOCK_SIDE / 5, Math.PI / 2, Math.PI * 3 / 2)
+  ctx.moveTo(-BLOCK_SIDE / 3, BLOCK_SIDE / 2)
+  ctx.arc(-BLOCK_SIDE / 3, BLOCK_SIDE * 3 / 10,
+          BLOCK_SIDE / 5, Math.PI / 2, Math.PI * 3 / 2)
+  ctx.moveTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
+  ctx.lineTo(-BLOCK_SIDE / 3, -BLOCK_SIDE / 2)
+  ctx.moveTo(-BLOCK_SIDE / 3, -BLOCK_SIDE / 10)
+  ctx.lineTo(-BLOCK_SIDE / 3, BLOCK_SIDE / 10)
+  ctx.moveTo(-BLOCK_SIDE / 3, BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 2)
   ctx.stroke()
 
   ctx.rotate(-Math.PI * (x_dir + y_dir / 2))
-  ctx.translate(-x - BLOCK_DIST / 2, -y - BLOCK_DIST / 2)
+  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 
   if (square.front.equals(new Vector(1, 0)) || // up
       square.front.equals(new Vector(0, -1))) { // right
@@ -153,10 +151,10 @@ function renderFood(food) {
   const y = (food.y / Y_BLOCKS) * H
 
   ctx.beginPath()
-  ctx.moveTo(x + BLOCK_DIST / 2, y)
-  ctx.lineTo(x + BLOCK_DIST, y + BLOCK_DIST / 2)
-  ctx.lineTo(x + BLOCK_DIST / 2, y + BLOCK_DIST)
-  ctx.lineTo(x, y + BLOCK_DIST / 2)
+  ctx.moveTo(x + BLOCK_SIDE / 2, y)
+  ctx.lineTo(x + BLOCK_SIDE, y + BLOCK_SIDE / 2)
+  ctx.lineTo(x + BLOCK_SIDE / 2, y + BLOCK_SIDE)
+  ctx.lineTo(x, y + BLOCK_SIDE / 2)
   ctx.closePath()
   ctx.stroke()
 }
