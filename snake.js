@@ -11,11 +11,16 @@ const border = Number(
   .getPropertyValue('border-left-width').slice(0, -2));
 
 const W = canvas.width = window.innerWidth - 2 * border
-const H = canvas.height = window.innerHeight - 2 * border
 
-const N = Math.floor(W / X_BLOCKS)
-const Y_BLOCKS = Math.floor(H / N)
 const BLOCK_SIDE = W / X_BLOCKS
+
+const MAX_HEIGHT = window.innerHeight - 2 * border
+const Y_BLOCKS = Math.floor(MAX_HEIGHT * X_BLOCKS / W)
+const H = canvas.height = Y_BLOCKS * BLOCK_SIDE
+canvas.style.borderWidth = `${border + (MAX_HEIGHT - H) / 2}px
+                            ${border}px
+                            ${border + (MAX_HEIGHT - H) / 2}px
+                            ${border}px`
 
 class World {
   constructor() {
