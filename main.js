@@ -4,10 +4,17 @@ async function delay(ms) {
   })
 }
 
+let prev
 async function play() {
-  draw(world)
-  await delay(1 / SPEED)
-  world.step()
+  if (!world.isPaused) {
+    const now = ((new Date() | 0) - world.timePaused)
+                % (1 / SPEED) / (1 / SPEED) * BLOCK_SIDE
+    if (now < prev) {
+      world.step()
+    }
+    draw(world, now)
+    prev = now
+  }
   if (!world.gameOver) {
     requestAnimationFrame(play)
   } else {
@@ -24,6 +31,9 @@ document.onkeydown = (e) => {
   if (key === 80 && // P
       !world.gameOver) { // Pause only running game
     world.togglePause()
+    if (world.isPaused) {
+      printPaused()
+    }
   } else if (key === 78 && // N
              world.gameOver) { // New game
     world = new World()
