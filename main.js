@@ -1,9 +1,3 @@
-async function delay(ms) {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms)
-  })
-}
-
 async function play(prev) {
   let now
   if (!world.isPaused) {
