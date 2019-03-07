@@ -4,19 +4,18 @@ async function delay(ms) {
   })
 }
 
-let prev
-async function play() {
+async function play(prev) {
+  let now
   if (!world.isPaused) {
-    const now = ((new Date() | 0) - world.timePaused)
-                % (1 / SPEED) / (1 / SPEED) * BLOCK_SIDE
+    now = ((new Date() | 0) - world.timePaused)
+          % (1 / SPEED) / (1 / SPEED) * BLOCK_SIDE
     if (now < prev) {
       world.step()
     }
     draw(world, now)
-    prev = now
   }
   if (!world.gameOver) {
-    requestAnimationFrame(play)
+    requestAnimationFrame(play.bind(this, now || prev))
   } else {
     gameOver(world.score, world.easterEgg)
   }
