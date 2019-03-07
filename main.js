@@ -30,7 +30,7 @@ document.onkeydown = (e) => {
 
   if (key === 80 && // P
       !world.gameOver) { // Pause only running game
-    world.togglePause()
+    world.togglePause(1 / SPEED)
     if (world.isPaused) {
       printPaused()
     }

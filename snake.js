@@ -132,12 +132,13 @@ class World {
     return this.direction
   }
 
-  togglePause() {
+  togglePause(maxTime) {
     this.isPaused = !this.isPaused
     if (this.isPaused) {
       this.pausedOn = new Date() | 0
     } else {
-      this.timePaused += (new Date() | 0) - this.pausedOn
+      this.timePaused = (this.timePaused +
+        (new Date() | 0) - this.pausedOn) % maxTime
     }
   }
 }
