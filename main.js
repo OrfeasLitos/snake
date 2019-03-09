@@ -1,4 +1,4 @@
-async function play(prev) {
+async function run(prev) {
   let now = null
   if (!world.isPaused) {
     now = ((new Date() | 0) - world.timePaused)
@@ -9,7 +9,7 @@ async function play(prev) {
     draw(world, now)
   }
   if (!world.gameOver) {
-    requestAnimationFrame(play.bind(this, now || prev))
+    requestAnimationFrame(run.bind(this, now || prev))
   } else {
     gameOver(world.score, world.easterEgg)
   }
@@ -30,7 +30,7 @@ document.onkeydown = (e) => {
   } else if (key === 78 && // N
              world.gameOver) { // New game
     world = new World()
-    play()
+    run()
   } else if ([37, 38, 39, 40].includes(key) &&
              !world.isPaused) {
     const dir = key - 37
@@ -40,4 +40,4 @@ document.onkeydown = (e) => {
   }
 }
 
-play()
+run()
