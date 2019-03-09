@@ -1,8 +1,11 @@
+function modTime(time) {
+  return (time % (1 / SPEED)) * SPEED * BLOCK_SIDE
+}
+
 async function run(prev) {
   let now = null
   if (!world.isPaused) {
-    now = ((new Date() | 0) - world.timePaused)
-          % (1 / SPEED) / (1 / SPEED) * BLOCK_SIDE
+    now = modTime((new Date() | 0) - world.timePaused)
     if (now < prev) {
       world.step()
     }
@@ -30,7 +33,7 @@ document.onkeydown = (e) => {
   } else if (key === 78 && // N
              world.gameOver) { // New game
     world = new World()
-    run()
+    run(modTime(new Date() | 0))
   } else if ([37, 38, 39, 40].includes(key) &&
              !world.isPaused) {
     const dir = key - 37
@@ -40,4 +43,4 @@ document.onkeydown = (e) => {
   }
 }
 
-run()
+run(modTime(new Date() | 0))
