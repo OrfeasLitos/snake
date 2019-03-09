@@ -66,15 +66,15 @@ class World {
   }
 
   getRandomSquare() {
-    return new Vector(
+    return new Square(new Vector(
       Math.floor(Math.random() * X_BLOCKS),
-      Math.floor(Math.random() * Y_BLOCKS))
+      Math.floor(Math.random() * Y_BLOCKS)))
   }
 
   produceFood() {
     let food = this.getRandomSquare()
     while (this.squares.some(
-      square => square.equals(food)
+      square => square.equals(food.loc)
     )) {
       food = this.getRandomSquare()
     }
@@ -91,7 +91,7 @@ class World {
   }
 
   maybeEat() {
-    if (this.head.loc.equals(this.food)) {
+    if (this.head.loc.equals(this.food.loc)) {
      this.score++
      this.food = this.produceFood()
     } else { // no food, remove last square

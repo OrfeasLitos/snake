@@ -1,5 +1,5 @@
 class Square {
-  constructor(loc, front, back) {
+  constructor(loc, front = new Vector(0, 0), back) {
     this.loc = loc
     this.front = front
     if (back === undefined) {
