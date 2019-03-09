@@ -1,5 +1,5 @@
 async function play(prev) {
-  let now
+  let now = null
   if (!world.isPaused) {
     now = ((new Date() | 0) - world.timePaused)
           % (1 / SPEED) / (1 / SPEED) * BLOCK_SIDE
