@@ -3,74 +3,10 @@ const TEXTSIZE = 30
 ctx.font = TEXTSIZE + 'px Arial'
 ctx.textAlign = 'left'
 
-function renderBox(square, x, y) {
-  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
-  for (let i of [
-    new Vector(0, 1),  // top
-    new Vector(-1, 0), // left
-    new Vector(0, -1), // bottom
-    new Vector(1, 0)   // right
-  ]) {
-    if(!square.front.equals(i) && !square.back.equals(i)) {
-      ctx.beginPath()
-      ctx.moveTo(
-        (Math.trunc(i.x - i.y + 1/2) - 1/2) * BLOCK_SIDE,
-        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
-      ctx.lineTo(
-        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE,
-        (Math.trunc(-i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
-      ctx.stroke()
-    }
-  }
-  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
-}
-
-function renderStripe(x, y) {
-  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
-  ctx.beginPath()
-  ctx.moveTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
-  ctx.lineTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
-  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 4)
-  ctx.lineTo(-BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
-  ctx.closePath()
-  ctx.stroke()
-  ctx.fill()
-  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
-}
-
-function renderUpperCorner(x, y) {
-  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
-  ctx.beginPath()
-  ctx.moveTo(BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
-  ctx.closePath()
-  ctx.stroke()
-  ctx.fill()
-  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
-}
-
-function renderLowerCorner(x, y) {
-  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
-  ctx.beginPath()
-  ctx.moveTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 4)
-  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
-  ctx.lineTo(-BLOCK_SIDE / 4, BLOCK_SIDE / 2)
-  ctx.closePath()
-  ctx.stroke()
-  ctx.fill()
-  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
-}
-
-function renderHead(square) {
-  const x = (square.loc.x / X_BLOCKS) * W
-  const y = (square.loc.y / Y_BLOCKS) * H
+function head(square) {
   const x_dir = (square.front.x == 1) ? 0 : square.front.x
   const y_dir = square.front.y
 
-  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   ctx.rotate(Math.PI * (x_dir + y_dir / 2))
 
   ctx.beginPath()
@@ -99,16 +35,14 @@ function renderHead(square) {
   ctx.stroke()
 
   ctx.rotate(-Math.PI * (x_dir + y_dir / 2))
-  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 }
 
-function renderTail(square) {
+function tail(square) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
   const x_dir = (square.front.x == 1) ? 0 : square.front.x
   const y_dir = square.front.y
 
-  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   ctx.rotate(Math.PI * (x_dir + y_dir / 2))
 
   ctx.beginPath()
@@ -126,35 +60,81 @@ function renderTail(square) {
   ctx.stroke()
 
   ctx.rotate(-Math.PI * (x_dir + y_dir / 2))
-  ctx.translate(-x - BLOCK_SIDE / 2, -y - BLOCK_SIDE / 2)
 
   if (square.front.equals(new Vector(1, 0)) || // up
       square.front.equals(new Vector(0, -1))) { // right
-    renderUpperCorner(x, y)
+    upperCorner(square)
   } else { // left or down
-    renderLowerCorner(x, y)
+    lowerCorner(square)
   }
 }
 
-function renderBody(square) {
-  const x = (square.loc.x / X_BLOCKS) * W
-  const y = (square.loc.y / Y_BLOCKS) * H
-
-  renderBox(square, x, y)
-  renderStripe(x, y)
-  renderUpperCorner(x, y)
-  renderLowerCorner(x, y)
+function box(front, back) {
+  for (let i of [
+    new Vector(0, 1),  // top
+    new Vector(-1, 0), // left
+    new Vector(0, -1), // bottom
+    new Vector(1, 0)   // right
+  ]) {
+    if(!front.equals(i) && !back.equals(i)) {
+      ctx.beginPath()
+      ctx.moveTo(
+        (Math.trunc(i.x - i.y + 1/2) - 1/2) * BLOCK_SIDE,
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
+      ctx.lineTo(
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE,
+        (Math.trunc(-i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
+      ctx.stroke()
+    }
+  }
 }
 
-function renderFood(food) {
-  const x = (food.x / X_BLOCKS) * W
-  const y = (food.y / Y_BLOCKS) * H
-
+function stripe() {
   ctx.beginPath()
-  ctx.moveTo(x + BLOCK_SIDE / 2, y)
-  ctx.lineTo(x + BLOCK_SIDE, y + BLOCK_SIDE / 2)
-  ctx.lineTo(x + BLOCK_SIDE / 2, y + BLOCK_SIDE)
-  ctx.lineTo(x, y + BLOCK_SIDE / 2)
+  ctx.moveTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
+  ctx.lineTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
+  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 4)
+  ctx.lineTo(-BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
+  ctx.closePath()
+  ctx.stroke()
+  ctx.fill()
+}
+
+function upperCorner() {
+  ctx.beginPath()
+  ctx.moveTo(BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
+  ctx.closePath()
+  ctx.stroke()
+  ctx.fill()
+}
+
+function lowerCorner() {
+  ctx.beginPath()
+  ctx.moveTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 4)
+  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
+  ctx.lineTo(-BLOCK_SIDE / 4, BLOCK_SIDE / 2)
+  ctx.closePath()
+  ctx.stroke()
+  ctx.fill()
+}
+
+function body(square) {
+  box(square.front, square.back)
+  stripe()
+  upperCorner()
+  lowerCorner()
+}
+
+function food(food) {
+  ctx.beginPath()
+  ctx.moveTo(0, -BLOCK_SIDE / 2)
+  ctx.lineTo(BLOCK_SIDE / 2, 0)
+  ctx.lineTo(0, BLOCK_SIDE / 2)
+  ctx.lineTo(-BLOCK_SIDE / 2, 0)
   ctx.closePath()
   ctx.stroke()
 }
@@ -169,18 +149,30 @@ function printPaused() {
   ctx.textAlign = 'left'
 }
 
-function draw(world) {
+function draw(world, offset) {
   ctx.clearRect(0, 0, W, H)
-  renderHead(world.head)
+  renderShape(head, world.head, offset)
   for (let i = 1; i < world.squares.length - 1; i++) {
-    renderBody(world.squares[i])
+    renderShape(body, world.squares[i], offset)
   }
-  renderTail(world.tail)
+  renderShape(tail, world.tail, offset)
+  renderShape(food, world.food, 0)
   printScore(world.score)
-  renderFood(world.food)
-  if (world.isPaused) {
-    printPaused()
-  }
+}
+
+// TODO
+// offset negative
+// also zoom (no BLOCK_SIDE in shapes)
+// also rotate (all is dumb in shapes)
+// fix corners
+function renderShape(shape, square, offset) {
+  const x = (square.loc.x / X_BLOCKS) * W
+  const y = (square.loc.y / Y_BLOCKS) * H
+  ctx.translate(x + BLOCK_SIDE / 2 + square.front.x * offset,
+                y + BLOCK_SIDE / 2 + square.front.y * offset)
+  shape(square)
+  ctx.translate(-x - BLOCK_SIDE / 2 - square.front.x * offset,
+                -y - BLOCK_SIDE / 2 - square.front.y * offset)
 }
 
 function gameOver(score, easterEgg) {
