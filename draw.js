@@ -168,11 +168,11 @@ function draw(world, offset) {
 function renderShape(shape, square, offset) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
-  ctx.translate(x + BLOCK_SIDE / 2 + square.front.x * offset,
-                y + BLOCK_SIDE / 2 + square.front.y * offset)
+  ctx.translate(x + BLOCK_SIDE / 2 - square.front.x * offset,
+                y + BLOCK_SIDE / 2 - square.front.y * offset)
   shape(square)
-  ctx.translate(-x - BLOCK_SIDE / 2 - square.front.x * offset,
-                -y - BLOCK_SIDE / 2 - square.front.y * offset)
+  ctx.translate(-x - BLOCK_SIDE / 2 + square.front.x * offset,
+                -y - BLOCK_SIDE / 2 + square.front.y * offset)
 }
 
 function gameOver(score, easterEgg) {

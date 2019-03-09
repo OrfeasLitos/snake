@@ -9,7 +9,7 @@ async function run(prev) {
     if (now < prev) {
       world.step()
     }
-    draw(world, now)
+    draw(world, BLOCK_SIDE - now)
   }
   if (!world.gameOver) {
     requestAnimationFrame(run.bind(this, now || prev))
