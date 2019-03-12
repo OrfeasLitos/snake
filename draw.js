@@ -2,6 +2,7 @@ const TEXTSIZE = 30
 
 ctx.font = TEXTSIZE + 'px Arial'
 ctx.textAlign = 'left'
+ctx.lineWidth = 1 / BLOCK_SIDE
 
 function head(square) {
   const x_dir = (square.front.x == 1) ? 0 : square.front.x
@@ -10,26 +11,26 @@ function head(square) {
   ctx.rotate(Math.PI * (x_dir + y_dir / 2))
 
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (2/3 - 1/2))
-  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE * (2/3 - 1/2))
-  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
+  ctx.moveTo(-1/2, -1/2)
+  ctx.lineTo(1/4, 1/3 - 1/2)
+  ctx.lineTo(1/2, 1/3 - 1/2)
+  ctx.lineTo(1/2, 2/3 - 1/2)
+  ctx.lineTo(1/4, 2/3 - 1/2)
+  ctx.lineTo(-1/2, 1/2)
   ctx.stroke()
 
   ctx.beginPath()
-  ctx.moveTo(BLOCK_SIDE / 4, BLOCK_SIDE * (2/3 - 1/2))
-  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (1/3 - 1/2))
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE * (2/3 - 1/2))
+  ctx.moveTo(1/4, 2/3 - 1/2)
+  ctx.lineTo(1/4, 1/3 - 1/2)
+  ctx.lineTo(1/2, 1/3 - 1/2)
+  ctx.lineTo(1/2, 2/3 - 1/2)
   ctx.closePath()
   ctx.fill()
 
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 4)
-  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
-  ctx.lineTo(-BLOCK_SIDE * 5 / 28, BLOCK_SIDE * 5 / 14)
+  ctx.moveTo(-1/2, 1/4)
+  ctx.lineTo(-1/2, 1/2)
+  ctx.lineTo(-5/28, 5/14)
   ctx.closePath()
   ctx.fill()
   ctx.stroke()
@@ -46,17 +47,17 @@ function tail(square) {
   ctx.rotate(Math.PI * (x_dir + y_dir / 2))
 
   ctx.beginPath()
-  ctx.arc(-BLOCK_SIDE / 3, -BLOCK_SIDE * 3 / 10,
-          BLOCK_SIDE / 5, Math.PI / 2, Math.PI * 3 / 2)
-  ctx.moveTo(-BLOCK_SIDE / 3, BLOCK_SIDE / 2)
-  ctx.arc(-BLOCK_SIDE / 3, BLOCK_SIDE * 3 / 10,
-          BLOCK_SIDE / 5, Math.PI / 2, Math.PI * 3 / 2)
-  ctx.moveTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
-  ctx.lineTo(-BLOCK_SIDE / 3, -BLOCK_SIDE / 2)
-  ctx.moveTo(-BLOCK_SIDE / 3, -BLOCK_SIDE / 10)
-  ctx.lineTo(-BLOCK_SIDE / 3, BLOCK_SIDE / 10)
-  ctx.moveTo(-BLOCK_SIDE / 3, BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 2)
+  ctx.arc(-1/3, -3/10, 1/5,
+          Math.PI / 2, Math.PI * 3 / 2)
+  ctx.moveTo(-1/3, 1/2)
+  ctx.arc(-1/3, 3/10, 1/5,
+          Math.PI / 2, Math.PI * 3 / 2)
+  ctx.moveTo(1/2, -1/2)
+  ctx.lineTo(-1/3, -1/2)
+  ctx.moveTo(-1/3, -1/10)
+  ctx.lineTo(-1/3, 1/10)
+  ctx.moveTo(-1/3, 1/2)
+  ctx.lineTo(1/2, 1/2)
   ctx.stroke()
 
   ctx.rotate(-Math.PI * (x_dir + y_dir / 2))
@@ -79,11 +80,11 @@ function box(front, back) {
     if(!front.equals(i) && !back.equals(i)) {
       ctx.beginPath()
       ctx.moveTo(
-        (Math.trunc(i.x - i.y + 1/2) - 1/2) * BLOCK_SIDE,
-        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
+        (Math.trunc(i.x - i.y + 1/2) - 1/2) * 1,
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * 1)
       ctx.lineTo(
-        (Math.trunc(i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE,
-        (Math.trunc(-i.x + i.y + 1/2) - 1/2) * BLOCK_SIDE)
+        (Math.trunc(i.x + i.y + 1/2) - 1/2) * 1,
+        (Math.trunc(-i.x + i.y + 1/2) - 1/2) * 1)
       ctx.stroke()
     }
   }
@@ -91,12 +92,12 @@ function box(front, back) {
 
 function stripe() {
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
-  ctx.lineTo(-BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
-  ctx.lineTo(BLOCK_SIDE / 4, BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, BLOCK_SIDE / 4)
-  ctx.lineTo(-BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
+  ctx.moveTo(-1/2, -1/2)
+  ctx.lineTo(-1/2, -1/4)
+  ctx.lineTo(1/4, 1/2)
+  ctx.lineTo(1/2, 1/2)
+  ctx.lineTo(1/2, 1/4)
+  ctx.lineTo(-1/4, -1/2)
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
@@ -104,9 +105,9 @@ function stripe() {
 
 function upperCorner() {
   ctx.beginPath()
-  ctx.moveTo(BLOCK_SIDE / 4, -BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, -BLOCK_SIDE / 4)
+  ctx.moveTo(1/4, -1/2)
+  ctx.lineTo(1/2, -1/2)
+  ctx.lineTo(1/2, -1/4)
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
@@ -114,9 +115,9 @@ function upperCorner() {
 
 function lowerCorner() {
   ctx.beginPath()
-  ctx.moveTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 4)
-  ctx.lineTo(-BLOCK_SIDE / 2, BLOCK_SIDE / 2)
-  ctx.lineTo(-BLOCK_SIDE / 4, BLOCK_SIDE / 2)
+  ctx.moveTo(-1/2, 1/4)
+  ctx.lineTo(-1/2, 1/2)
+  ctx.lineTo(-1/4, 1/2)
   ctx.closePath()
   ctx.stroke()
   ctx.fill()
@@ -131,10 +132,10 @@ function body(square) {
 
 function food(food) {
   ctx.beginPath()
-  ctx.moveTo(0, -BLOCK_SIDE / 2)
-  ctx.lineTo(BLOCK_SIDE / 2, 0)
-  ctx.lineTo(0, BLOCK_SIDE / 2)
-  ctx.lineTo(-BLOCK_SIDE / 2, 0)
+  ctx.moveTo(0, -1/2)
+  ctx.lineTo(1/2, 0)
+  ctx.lineTo(0, 1/2)
+  ctx.lineTo(-1/2, 0)
   ctx.closePath()
   ctx.stroke()
 }
@@ -161,18 +162,17 @@ function draw(world, offset) {
 }
 
 // TODO
-// offset negative
-// also zoom (no BLOCK_SIDE in shapes)
 // also rotate (all is dumb in shapes)
 // fix corners
+// Remove second setTransform
 function renderShape(shape, square, offset) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
-  ctx.translate(x + BLOCK_SIDE / 2 - square.front.x * offset,
+  ctx.setTransform(BLOCK_SIDE, 0, 0, BLOCK_SIDE,
+                x + BLOCK_SIDE / 2 - square.front.x * offset,
                 y + BLOCK_SIDE / 2 - square.front.y * offset)
   shape(square)
-  ctx.translate(-x - BLOCK_SIDE / 2 + square.front.x * offset,
-                -y - BLOCK_SIDE / 2 + square.front.y * offset)
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
 }
 
 function gameOver(score, easterEgg) {
