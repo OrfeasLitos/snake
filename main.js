@@ -26,21 +26,33 @@ function main() {
 
 let world = new World()
 
+const KEY_N = 78
+const KEY_P = 80
+
+const KEY_LEFT  = 37
+const KEY_UP    = 38
+const KEY_RIGHT = 39
+const KEY_DOWN  = 40
+const KEY_ARROWS = [KEY_LEFT, KEY_UP, KEY_RIGHT, KEY_DOWN]
+
 document.onkeydown = (e) => {
   e = e || window.event
   const key = e.keyCode
 
-  if (key === 80 && // P
-      !world.gameOver) { // Pause only running game
+  if (key === KEY_P) {
+    if(world.gameOver) { // Pause only running game
+      return
+    }
+
     world.togglePause(1 / SPEED)
     if (world.isPaused) {
       printPaused()
     }
-  } else if (key === 78 && // N
+  } else if (key === KEY_N &&
              world.gameOver) { // New game
     world = new World()
     run(modTime(new Date() | 0))
-  } else if ([37, 38, 39, 40].includes(key) &&
+  } else if (KEY_ARROWS.includes(key) &&
              !world.isPaused) {
     const dir = key - 37
     world.dir = new Vector(
