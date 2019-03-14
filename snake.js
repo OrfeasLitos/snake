@@ -118,14 +118,24 @@ class World {
     this.maybeEat()
   }
 
-  set dir(dir) {
-    const prev = (this.movesQueue.length === 0) ?
-      this.dir : this.movesQueue[0]
+  set dir(newDir) {
+    const backwards = (newDir) => {
+      const prevDir = (this.movesQueue.length === 0) ?
+        this.dir : this.movesQueue[0]
 
-    if (!prev.add(dir).isZero() &&
-        this.movesQueue.length < 2) {
-      this.movesQueue.push(dir)
+      return prevDir.add(newDir).isZero()
     }
+
+    if (backwards(newDir)) {
+      return
+    }
+
+    // Only remember 2 inputs
+    if (this.movesQueue.length >= 2) {
+      return
+    }
+
+    this.movesQueue.push(newDir)
   }
 
   get dir() {
