@@ -72,12 +72,12 @@ class World {
   }
 
   produceFood() {
-    let food = this.getRandomSquare()
-    while (this.squares.some(
-      square => square.equals(food.loc)
-    )) {
+    let food
+    do {
       food = this.getRandomSquare()
-    }
+    } while (this.squares.some(
+      square => square.equals(food.loc)
+    ))
     return food
   }
 
