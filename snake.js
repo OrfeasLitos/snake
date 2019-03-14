@@ -8,7 +8,7 @@ const ctx = canvas.getContext('2d')
 // TODO: use jQuery if needed 2 more times
 const border = Number(
   getComputedStyle(canvas, null)
-  .getPropertyValue('border-left-width').slice(0, -2));
+  .getPropertyValue('border-left-width').slice(0, -'px'.length));
 
 const W = canvas.width = window.innerWidth - 2 * border
 
@@ -109,7 +109,7 @@ class World {
   maybeCollide() {
     if (this.collides()) {
       this.gameOver = true
-      if (this.squares[0].equals(this.head.loc)) {
+      if (this.tail.equals(this.head.loc)) {
         this.easterEgg = true
       }
     }
