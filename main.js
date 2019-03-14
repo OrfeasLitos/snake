@@ -48,12 +48,20 @@ document.onkeydown = (e) => {
     if (world.isPaused) {
       printPaused()
     }
-  } else if (key === KEY_N &&
-             world.gameOver) { // New game
+  } else if (key === KEY_N) {
+    if(!world.gameOver) {
+      return
+    }
+
+    // New game
     world = new World()
     run(modTime(new Date() | 0))
-  } else if (KEY_ARROWS.includes(key) &&
-             !world.isPaused) {
+  } else if ([KEY_LEFT, KEY_UP,
+             KEY_RIGHT, KEY_DOWN].includes(key)) {
+    if(world.isPaused) {
+      return
+    }
+
     const dir = key - 37
     world.dir = new Vector(
       (dir - 1) % 2, // -1,  0, 1, 0
