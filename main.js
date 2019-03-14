@@ -1,21 +1,27 @@
-function modTime(time) {
-  return (time % (1 / SPEED)) * SPEED * BLOCK_SIDE
-}
 
-async function run(prev) {
-  let now = null
-  if (!world.isPaused) {
-    now = modTime((new Date() | 0) - world.timePaused)
-    if (now < prev) {
-      world.step()
+function main() {
+  function modTime(time) {
+    return (time % (1 / SPEED)) * SPEED * BLOCK_SIDE
+  }
+
+  function run() {
+    if (!world.isPaused) {
+      let now = modTime((new Date() | 0) - world.timePaused)
+      if (now < prev) {
+        world.step()
+      }
+      draw(world, BLOCK_SIDE - now)
+      prev = now
     }
-    draw(world, BLOCK_SIDE - now)
+    if (!world.gameOver) {
+      requestAnimationFrame(run)
+    } else {
+      gameOver(world.score, world.easterEgg)
+    }
   }
-  if (!world.gameOver) {
-    requestAnimationFrame(run.bind(this, now || prev))
-  } else {
-    gameOver(world.score, world.easterEgg)
-  }
+
+  let prev = modTime(new Date() | 0)
+  run()
 }
 
 let world = new World()
@@ -43,4 +49,4 @@ document.onkeydown = (e) => {
   }
 }
 
-run(modTime(new Date() | 0))
+main()
