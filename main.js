@@ -1,4 +1,5 @@
 
+// TODO add dt here to gameTime, clear world.timePaused
 function main() {
   function modTime(time) {
     return (time % (1 / SPEED)) * SPEED * BLOCK_SIDE

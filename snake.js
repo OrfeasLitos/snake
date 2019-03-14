@@ -1,3 +1,4 @@
+// TODO: separate snake in new object
 const INIT_SNAKE_SIZE = 4
 const X_BLOCKS = 100
 const SPEED = 0.005
