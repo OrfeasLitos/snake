@@ -36,6 +36,13 @@ const KEY_RIGHT = 39
 const KEY_DOWN  = 40
 const KEY_ARROWS = [KEY_LEFT, KEY_UP, KEY_RIGHT, KEY_DOWN]
 
+const keyDirections = {
+  [KEY_UP]:    new Vector(0, -1),
+  [KEY_DOWN]:  new Vector(0,  1),
+  [KEY_LEFT]:  new Vector(-1, 0),
+  [KEY_RIGHT]: new Vector(1,  0)
+}
+
 document.onkeydown = (e) => {
   e = e || window.event
   const key = e.keyCode
@@ -57,16 +64,11 @@ document.onkeydown = (e) => {
     // New game
     world = new World()
     run(modTime(new Date() | 0))
-  } else if ([KEY_LEFT, KEY_UP,
-             KEY_RIGHT, KEY_DOWN].includes(key)) {
+  } else if (KEY_ARROWS.includes(key)) {
     if(world.isPaused) {
       return
     }
-
-    const dir = key - 37
-    world.dir = new Vector(
-      (dir - 1) % 2, // -1,  0, 1, 0
-      (dir - 2) % 2) //  0, -1, 0, 1
+    world.dir = keyDirections[key]
   }
 }
 
