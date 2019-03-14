@@ -99,12 +99,15 @@ class World {
     }
   }
 
+  collides() {
+    return this.squares.slice(0, -1).some(
+      square => square.equals(this.head.loc))
+      || this.borders.some(
+      square => square.equals(this.head.loc))
+  }
+
   maybeCollide() {
-    if (this.squares.slice(0, -1).some(
-      square => square.equals(this.head.loc)
-    ) || this.borders.some(
-      square => square.equals(this.head.loc)
-    )) {
+    if (this.collides()) {
       this.gameOver = true
       if (this.squares[0].equals(this.head.loc)) {
         this.easterEgg = true
