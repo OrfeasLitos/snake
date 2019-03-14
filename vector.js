@@ -19,18 +19,11 @@ class Vector {
   }
 
   equals(vec) {
-    if (this.x === vec.x && this.y === vec.y) {
-      return true
-    }
-    return false
+    return this.x === vec.x && this.y === vec.y
   }
 
   isZero() {
-    if (this.x === 0 && this.y == 0) {
-      return true
-    } else {
-    return false
-    }
+    return this.x === 0 && this.y == 0
   }
 
   toString() {
