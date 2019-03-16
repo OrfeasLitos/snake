@@ -1,4 +1,3 @@
-// TODO: less mods
 // TODO: delete world.timePaused, world.pausedOn
 function main() {
   function run() {
@@ -6,12 +5,12 @@ function main() {
     const dt = (now - prev) * SPEED
 
     if (!world.isPaused) {
-      console.log((gameTime + dt) % 1, gameTime % 1)
-      if ((gameTime + dt) % 1 < gameTime % 1) {
+      const nextGameTime = (gameTime + dt) % 1
+      if (nextGameTime < gameTime) {
         world.step()
       }
-      gameTime += dt
-      draw(world, 1 - gameTime % 1)
+      gameTime = nextGameTime
+      draw(world, 1 - gameTime)
     }
 
     prev = now
