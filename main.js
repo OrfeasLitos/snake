@@ -1,4 +1,3 @@
-
 // TODO add dt here to gameTime, clear world.timePaused
 function main() {
   function modTime(time) {
@@ -48,7 +47,7 @@ document.onkeydown = (e) => {
   const key = e.keyCode
 
   if (key === KEY_P) {
-    if(world.gameOver) { // Pause only running game
+    if (world.gameOver) { // Pause only running game
       return
     }
 
@@ -57,7 +56,7 @@ document.onkeydown = (e) => {
       printPaused()
     }
   } else if (key === KEY_N) {
-    if(!world.gameOver) {
+    if (!world.gameOver) {
       return
     }
 
@@ -65,7 +64,7 @@ document.onkeydown = (e) => {
     world = new World()
     run(modTime(new Date() | 0))
   } else if (KEY_ARROWS.includes(key)) {
-    if(world.isPaused) {
+    if (world.isPaused) {
       return
     }
     world.dir = keyDirections[key]
