@@ -1,4 +1,3 @@
-// TODO: delete world.timePaused, world.pausedOn
 function main() {
   function run() {
     const now = new Date() | 0
