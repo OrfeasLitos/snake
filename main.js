@@ -1,18 +1,21 @@
-// TODO add dt here to gameTime, clear world.timePaused
+// TODO: less mods
+// TODO: delete world.timePaused, world.pausedOn
 function main() {
-  function modTime(time) {
-    return (time % (1 / SPEED)) * SPEED * BLOCK_SIDE
-  }
-
   function run() {
+    const now = new Date() | 0
+    const dt = (now - prev) * SPEED
+
     if (!world.isPaused) {
-      let now = modTime((new Date() | 0) - world.timePaused)
-      if (now < prev) {
+      console.log((gameTime + dt) % 1, gameTime % 1)
+      if ((gameTime + dt) % 1 < gameTime % 1) {
         world.step()
       }
-      draw(world, BLOCK_SIDE - now)
-      prev = now
+      gameTime += dt
+      draw(world, 1 - gameTime % 1)
     }
+
+    prev = now
+
     if (!world.gameOver) {
       requestAnimationFrame(run)
     } else {
@@ -20,7 +23,8 @@ function main() {
     }
   }
 
-  let prev = modTime(new Date() | 0)
+  let gameTime = 0
+  let prev = new Date() | 0
   run()
 }
 

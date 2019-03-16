@@ -140,8 +140,8 @@ function renderShape(shape, square, offset) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
   ctx.save()
-  ctx.translate(x + BLOCK_SIDE / 2 - square.front.x * offset,
-                y + BLOCK_SIDE / 2 - square.front.y * offset)
+  ctx.translate(x + BLOCK_SIDE * (1/2 - square.front.x * offset),
+                y + BLOCK_SIDE * (1/2 - square.front.y * offset))
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
   ctx.transform(square.front.x, square.front.y,
                 square.front.y, square.front.x, 0, 0)
