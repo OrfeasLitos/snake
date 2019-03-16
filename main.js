@@ -62,7 +62,7 @@ document.onkeydown = (e) => {
 
     // New game
     world = new World()
-    run(modTime(new Date() | 0))
+    main()
   } else if (KEY_ARROWS.includes(key)) {
     if (world.isPaused) {
       return
