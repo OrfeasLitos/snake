@@ -4,21 +4,21 @@ ctx.font = TEXTSIZE + 'px Arial'
 ctx.textAlign = 'left'
 ctx.lineWidth = 1 / BLOCK_SIDE
 
-function head(square) {
+function head() {
   ctx.beginPath()
   ctx.moveTo(-1/2, -1/2)
-  ctx.lineTo(1/4, 1/3 - 1/2)
-  ctx.lineTo(1/2, 1/3 - 1/2)
-  ctx.lineTo(1/2, 2/3 - 1/2)
-  ctx.lineTo(1/4, 2/3 - 1/2)
+  ctx.lineTo(1/4, -1/6)
+  ctx.lineTo(1/2, -1/6)
+  ctx.lineTo(1/2, 1/6)
+  ctx.lineTo(1/4, 1/6)
   ctx.lineTo(-1/2, 1/2)
   ctx.stroke()
 
   ctx.beginPath()
-  ctx.moveTo(1/4, 2/3 - 1/2)
-  ctx.lineTo(1/4, 1/3 - 1/2)
-  ctx.lineTo(1/2, 1/3 - 1/2)
-  ctx.lineTo(1/2, 2/3 - 1/2)
+  ctx.moveTo(1/4, 1/6)
+  ctx.lineTo(1/4, -1/6)
+  ctx.lineTo(1/2, -1/6)
+  ctx.lineTo(1/2, 1/6)
   ctx.closePath()
   ctx.fill()
 
@@ -29,9 +29,17 @@ function head(square) {
   ctx.closePath()
   ctx.fill()
   ctx.stroke()
+
+  ctx.beginPath()
+  ctx.moveTo(-1/2, -1/4)
+  ctx.lineTo(-1/2, -1/2)
+  ctx.lineTo(-5/28, -5/14)
+  ctx.closePath()
+  ctx.fill()
+  ctx.stroke()
 }
 
-function tail(square) {
+function tail() {
   ctx.beginPath()
   ctx.arc(-1/3, -3/10, 1/5,
           Math.PI / 2, Math.PI * 3 / 2)
@@ -46,12 +54,11 @@ function tail(square) {
   ctx.lineTo(1/2, 1/2)
   ctx.stroke()
 
-  if (square.front.equals(new Vector(1, 0)) || // up
-      square.front.equals(new Vector(0, -1))) { // right
-    upperCorner()
-  } else { // left or down
-    lowerCorner()
-  }
+  upperCorner()
+  ctx.save()
+  ctx.rotate(-Math.PI / 2)
+  lowerCorner()
+  ctx.restore()
 }
 
 function box() {
@@ -96,7 +103,7 @@ function lowerCorner() {
   ctx.fill()
 }
 
-function body(square) {
+function body() {
   box()
   stripe()
   upperCorner()
@@ -145,7 +152,7 @@ function renderShape(shape, square, offset) {
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
   ctx.transform(square.front.x, square.front.y,
                 square.front.y, square.front.x, 0, 0)
-  shape(square)
+  shape()
   ctx.restore()
 }
 
