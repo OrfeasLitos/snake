@@ -31,8 +31,6 @@ class World {
     this.score = 0
     this.gameOver = false
     this.isPaused = false
-    this.timePaused = 0
-    this.pausedOn = null
 
     this.borders = []
     for (let i = 0; i < X_BLOCKS; i++) {
@@ -148,11 +146,5 @@ class World {
 
   togglePause(maxTime) {
     this.isPaused = !this.isPaused
-    if (this.isPaused) {
-      this.pausedOn = new Date() | 0
-    } else {
-      this.timePaused = (this.timePaused +
-        (new Date() | 0) - this.pausedOn) % maxTime
-    }
   }
 }
