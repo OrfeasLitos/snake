@@ -143,16 +143,20 @@ function printPaused() {
 
 function draw(world, offset) {
   ctx.clearRect(0, 0, W, H)
-  renderShape(head, world.head, offset)
+  renderShape(head, world.head,
+              world.squares[world.squares.length - 1].dir,
+              null, offset)
   for (let i = 1; i < world.squares.length - 1; i++) {
-    renderShape(body, world.squares[i], offset)
+    renderShape(body, world.squares[i],
+                world.squares[i+1].dir,
+                world.squares[i-1].dir, offset)
   }
-  renderShape(tail, world.tail, offset)
-  renderShape(food, world.food, 0)
+  renderShape(tail, world.tail, null, world.squares[1].dir, offset)
+  renderShape(food, world.food, null, null, 0)
   printScore(world.score)
 }
 
-function renderShape(shape, square, offset) {
+function renderShape(shape, square, nextDir, prevDir, offset) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
   ctx.save()
