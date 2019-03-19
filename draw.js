@@ -103,6 +103,17 @@ function lowerCorner() {
   ctx.fill()
 }
 
+// TODO: fixup
+// TODO: decide whether to rotate or not
+function turn(square, offset) {
+  ctx.beginPath()
+  ctx.moveTo(-1/2, -1/2)
+  ctx.lineTo(1/2, -1/2)
+  ctx.moveTo(-1/2, 1/2)
+  ctx.lineTo(1/2, 1/2)
+  ctx.stroke()
+}
+
 function body() {
   box()
   stripe()
@@ -134,25 +145,33 @@ function draw(world, offset) {
   ctx.clearRect(0, 0, W, H)
   renderShape(head, world.head, offset)
   for (let i = 1; i < world.squares.length - 1; i++) {
-    renderShape(body, world.squares[i], offset)
+    let shape
+    if (world.squares[i].isTurning()) {
+      shape = turn
+    } else {
+      shape = body
+    }
+    renderShape(shape, world.squares[i], offset)
   }
   renderShape(tail, world.tail, offset)
   renderShape(food, world.food, 0)
   printScore(world.score)
 }
 
-// TODO
-// fix corners
 function renderShape(shape, square, offset) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
   ctx.save()
-  ctx.translate(x + BLOCK_SIDE * (1/2 - square.front.x * offset),
-                y + BLOCK_SIDE * (1/2 - square.front.y * offset))
+  if (square.isTurning()) {
+    ctx.translate(x + BLOCK_SIDE * 1/2, y + BLOCK_SIDE * 1/2)
+  } else {
+    ctx.translate(x + BLOCK_SIDE * (1/2 - square.front.x * offset),
+                  y + BLOCK_SIDE * (1/2 - square.front.y * offset))
+    ctx.transform(square.front.x, square.front.y,
+                  square.front.y, square.front.x, 0, 0)
+  }
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
-  ctx.transform(square.front.x, square.front.y,
-                square.front.y, square.front.x, 0, 0)
-  shape()
+  shape(square, offset)
   ctx.restore()
 }
 
