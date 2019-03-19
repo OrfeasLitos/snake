@@ -14,8 +14,4 @@ class Square {
   equals(vec) {
     return this.loc.equals(vec)
   }
-
-  isTurning() {
-    return !this.front.equals(this.back.neg())
-  }
 }
