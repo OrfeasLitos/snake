@@ -1,21 +1,14 @@
 class Square {
-  constructor(loc, front = new Vector(1, 0), back) {
+  constructor(loc, dir = new Vector(1, 0)) {
     this.loc = loc
-    this.front = front
-    if (back === undefined) {
-      this.back = front.neg()
-    } else {
-      this.back = back
-    }
-
+    this.dir = dir
     return this
   }
 
   clone() {
     return new Square(
       this.loc.clone(),
-      this.front.clone(),
-      this.back.clone())
+      this.dir.clone())
   }
 
   equals(vec) {

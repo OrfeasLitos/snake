@@ -165,10 +165,10 @@ function renderShape(shape, square, offset) {
   if (square.isTurning()) {
     ctx.translate(x + BLOCK_SIDE * 1/2, y + BLOCK_SIDE * 1/2)
   } else {
-    ctx.translate(x + BLOCK_SIDE * (1/2 - square.front.x * offset),
-                  y + BLOCK_SIDE * (1/2 - square.front.y * offset))
-    ctx.transform(square.front.x, square.front.y,
-                  square.front.y, square.front.x, 0, 0)
+    ctx.translate(x + BLOCK_SIDE * (1/2 - square.dir.x * offset),
+                  y + BLOCK_SIDE * (1/2 - square.dir.y * offset))
+    ctx.transform(square.dir.x, square.dir.y,
+                  square.dir.y, square.dir.x, 0, 0)
   }
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
   shape(square, offset)

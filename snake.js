@@ -81,13 +81,11 @@ class World {
   }
 
   advance() {
-    const oldDir = this.dir.clone()
     if (this.movesQueue.length > 0) {
       this.direction = this.movesQueue.shift()
     }
-    this.head.front = this.dir.clone()
     this.squares.push(new Square(
-      this.head.loc.add(this.dir), oldDir))
+      this.head.loc.add(this.dir), this.dir))
   }
 
   maybeEat() {
