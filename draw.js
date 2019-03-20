@@ -8,7 +8,7 @@ function straight(a, b) {
   return a.equals(b)
 }
 
-function head(thisDir, prevDir, nextDir, offset) {
+function head(thisDir, nextDir, offset) {
   ctx.save()
   if (straight(thisDir, nextDir)) {
     ctx.translate(1 - offset, 0)
@@ -57,7 +57,7 @@ function head(thisDir, prevDir, nextDir, offset) {
   ctx.restore()
 }
 
-function tail(thisDir, prevDir, nextDir, offset) {
+function tail(thisDir, prevDir, offset) {
   ctx.save()
   if (straight(thisDir, prevDir)) {
     ctx.translate(1 - offset, 0)
@@ -135,17 +135,6 @@ function lowerCorner() {
   ctx.fill()
 }
 
-// TODO: fixup
-// TODO: decide whether to rotate or not
-function turn(square, offset) {
-  ctx.beginPath()
-  ctx.moveTo(-1/2, -1/2)
-  ctx.lineTo(1/2, -1/2)
-  ctx.moveTo(-1/2, 1/2)
-  ctx.lineTo(1/2, 1/2)
-  ctx.stroke()
-}
-
 function body() {
   box()
   stripe()
@@ -178,7 +167,7 @@ function printPaused() {
 
 function draw(world, offset) {
   ctx.clearRect(0, 0, W, H)
-  renderShape(head, world.head, null,
+  renderShape(head, world.head,
               world.squares[world.squares.length - 2].dir,
               offset)
   for (let i = 1; i < world.squares.length - 1; i++) {
@@ -186,8 +175,8 @@ function draw(world, offset) {
                 world.squares[i+1].dir,
                 world.squares[i-1].dir, offset)
   }
-  renderShape(tail, world.tail, world.squares[1].dir, null, offset)
-  renderShape(food, world.food, null, null, 0)
+  renderShape(tail, world.tail, world.squares[1].dir, offset)
+  renderShape(food, world.food)
   printScore(world.score)
 }
 
