@@ -154,6 +154,8 @@ function body() {
 }
 
 function food() {
+  ctx.save()
+  ctx.translate(1, 0)
   ctx.beginPath()
   ctx.moveTo(0, -1/2)
   ctx.lineTo(1/2, 0)
@@ -161,6 +163,7 @@ function food() {
   ctx.lineTo(-1/2, 0)
   ctx.closePath()
   ctx.stroke()
+  ctx.restore()
 }
 
 function printScore(score) {
