@@ -4,7 +4,23 @@ ctx.font = TEXTSIZE + 'px Arial'
 ctx.textAlign = 'left'
 ctx.lineWidth = 1 / BLOCK_SIDE
 
-function head() {
+function straight(a, b) {
+  return a.equals(b)
+}
+
+function head(thisDir, prevDir, nextDir, offset) {
+  ctx.save()
+  if (straight(thisDir, nextDir)) {
+    ctx.translate(1 - offset, 0)
+  } else {
+    const sum = thisDir.add(nextDir).x + thisDir.add(nextDir).y
+    const sign = sum ? -1 : 1
+    ctx.translate(1/2, sign/2)
+
+    ctx.rotate(-sign * offset * Math.PI /2)
+    ctx.translate(1/2, -sign/2)
+  }
+
   ctx.beginPath()
   ctx.moveTo(-1/2, -1/2)
   ctx.lineTo(1/4, -1/6)
@@ -37,9 +53,23 @@ function head() {
   ctx.closePath()
   ctx.fill()
   ctx.stroke()
+
+  ctx.restore()
 }
 
-function tail() {
+function tail(thisDir, prevDir, nextDir, offset) {
+  ctx.save()
+  if (straight(thisDir, prevDir)) {
+    ctx.translate(1 - offset, 0)
+  } else {
+    const sum = thisDir.add(prevDir).x + thisDir.add(prevDir).y
+    const sign = sum ? -1 : 1
+    ctx.translate(1/2, -sign/2)
+
+    ctx.rotate(sign * (offset - 1) * Math.PI /2)
+    ctx.translate(-1/2, sign/2)
+  }
+
   ctx.beginPath()
   ctx.arc(-1/3, -3/10, 1/5,
           Math.PI / 2, Math.PI * 3 / 2)
@@ -58,6 +88,8 @@ function tail() {
   ctx.save()
   ctx.rotate(-Math.PI / 2)
   lowerCorner()
+  ctx.restore()
+
   ctx.restore()
 }
 
@@ -143,29 +175,30 @@ function printPaused() {
 
 function draw(world, offset) {
   ctx.clearRect(0, 0, W, H)
-  renderShape(head, world.head,
-              world.squares[world.squares.length - 1].dir,
-              null, offset)
+  renderShape(head, world.head, null,
+              world.squares[world.squares.length - 2].dir,
+              offset)
   for (let i = 1; i < world.squares.length - 1; i++) {
     renderShape(body, world.squares[i],
                 world.squares[i+1].dir,
                 world.squares[i-1].dir, offset)
   }
-  renderShape(tail, world.tail, null, world.squares[1].dir, offset)
+  renderShape(tail, world.tail, world.squares[1].dir, null, offset)
   renderShape(food, world.food, null, null, 0)
   printScore(world.score)
 }
 
-function renderShape(shape, square, nextDir, prevDir, offset) {
+function renderShape(shape, square, prevDir, nextDir, offset) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
+
   ctx.save()
-  ctx.translate(x + BLOCK_SIDE * (1/2 - square.dir.x * offset),
-                y + BLOCK_SIDE * (1/2 - square.dir.y * offset))
+  ctx.translate(x + BLOCK_SIDE * (1/2 - square.dir.x),
+                y + BLOCK_SIDE * (1/2 - square.dir.y))
   ctx.transform(square.dir.x, square.dir.y,
                 square.dir.y, square.dir.x, 0, 0)
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
-  shape(square, offset)
+  shape(square.dir, prevDir, nextDir, offset)
   ctx.restore()
 }
 
