@@ -93,15 +93,6 @@ function tail(thisDir, prevDir, offset) {
   ctx.restore()
 }
 
-function box() {
-  ctx.beginPath()
-  ctx.moveTo(-1/2, -1/2)
-  ctx.lineTo(1/2, -1/2)
-  ctx.moveTo(-1/2, 1/2)
-  ctx.lineTo(1/2, 1/2)
-  ctx.stroke()
-}
-
 function stripe() {
   ctx.beginPath()
   ctx.moveTo(-1/2, -1/2)
@@ -135,6 +126,55 @@ function lowerCorner() {
   ctx.fill()
 }
 
+function back(thisDir, nextDir, offset) {
+  ctx.save()
+
+  if (straight(thisDir, nextDir)) {
+    ctx.beginPath()
+    ctx.moveTo(1/2 - offset, -1/2)
+    ctx.lineTo(1/2, -1/2)
+    ctx.moveTo(1/2 - offset, 1/2)
+    ctx.lineTo(1/2, 1/2)
+    ctx.stroke()
+    //stripe()
+  } else {
+    ctx.beginPath()
+    ctx.moveTo(1/2, -1/2)
+    ctx.arc(1/2, 1/2, 1, -Math.PI / 2,
+            -Math.PI * (1 + offset) / 2, true)
+    ctx.stroke()
+  }
+
+  ctx.restore()
+}
+
+function front(thisDir, prevDir, offset) {
+  ctx.save()
+
+  if (straight(thisDir, prevDir)) {
+    ctx.beginPath()
+    ctx.moveTo(1/2, -1/2)
+    ctx.lineTo(3/2 - offset, -1/2)
+    ctx.moveTo(1/2, 1/2)
+    ctx.lineTo(3/2 - offset, 1/2)
+    ctx.stroke()
+    //stripe()
+  } else {
+    ctx.beginPath()
+    ctx.moveTo(1/2, 1/2)
+    ctx.arc(1/2, -1/2, 1, Math.PI / 2,
+            Math.PI * offset / 2, true)
+    ctx.stroke()
+  }
+
+  ctx.restore()
+}
+
+function body(thisDir, prevDir, nextDir, offset) {
+  back(thisDir, nextDir, offset)
+  front(thisDir, prevDir, offset)
+}
+
 function body() {
   box()
   stripe()
@@ -165,6 +205,7 @@ function printPaused() {
   ctx.textAlign = 'left'
 }
 
+// TODO: don't jump when getting longer
 function draw(world, offset) {
   ctx.clearRect(0, 0, W, H)
   renderShape(head, world.head,
