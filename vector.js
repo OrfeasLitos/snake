@@ -26,7 +26,7 @@ class Vector {
     return this.x === 0 && this.y == 0
   }
 
-  inspect() {
+  toString() {
     return `(${this.x}, ${this.y})`
   }
 }
