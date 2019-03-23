@@ -13,12 +13,9 @@ function head(thisDir, { nextDir, offset }) {
   if (straight(thisDir, nextDir)) {
     ctx.translate(1 - offset, 0)
   } else {
-    const sum = thisDir.add(nextDir).x + thisDir.add(nextDir).y
-    const sign = sum ? -1 : 1
-    ctx.translate(1/2, sign/2)
-
-    ctx.rotate(-sign * offset * Math.PI /2)
-    ctx.translate(1/2, -sign/2)
+    ctx.translate(-1/2, -1/2)
+    ctx.rotate(offset * Math.PI / 2)
+    ctx.translate(1/2, 1/2)
   }
 
   ctx.beginPath()
@@ -223,8 +220,21 @@ function draw(world, offset) {
   printScore(world.score)
 }
 
-function renderShape(shape, square,
-           { prevDir = null, nextDir = null,
+function rotate(dir) {
+  if (dir.equals(new Vector(1, 0))) {
+    // do not rotate
+  } else if (dir.equals(new Vector(0, 1))) {
+    ctx.rotate(Math.PI / 2)
+  } else if (dir.equals(new Vector(-1, 0))) {
+    ctx.rotate(Math.PI)
+  } else if (dir.equals(new Vector(0, -1))) {
+    ctx.rotate(Math.PI * 3 / 2)
+  }
+}
+
+function renderShape(shape, square, {
+             prevDir = null,
+             nextDir = null,
              offset = 0 } = {offset : 0}) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
@@ -232,8 +242,7 @@ function renderShape(shape, square,
   ctx.save()
   ctx.translate(x + BLOCK_SIDE * (1/2 - square.dir.x),
                 y + BLOCK_SIDE * (1/2 - square.dir.y))
-  ctx.transform(square.dir.x, square.dir.y,
-                square.dir.y, square.dir.x, 0, 0)
+  rotate(square.dir)
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
   shape(square.dir, { prevDir, nextDir, offset })
   ctx.restore()
