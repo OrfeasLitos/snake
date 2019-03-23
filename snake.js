@@ -3,6 +3,10 @@ const INIT_SNAKE_SIZE = 4
 const X_BLOCKS = 100
 const SPEED = 0.005
 
+if (INIT_SNAKE_SIZE < 2) {
+  throw new RangeError("Initial snake size should be at least 2")
+}
+
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
