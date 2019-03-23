@@ -8,7 +8,7 @@ function straight(a, b) {
   return a.equals(b)
 }
 
-function head(thisDir, nextDir, offset) {
+function head(thisDir, { nextDir, offset }) {
   ctx.save()
   if (straight(thisDir, nextDir)) {
     ctx.translate(1 - offset, 0)
@@ -57,7 +57,7 @@ function head(thisDir, nextDir, offset) {
   ctx.restore()
 }
 
-function tail(thisDir, prevDir, offset) {
+function tail(thisDir, { prevDir, offset }) {
   ctx.save()
   if (straight(thisDir, prevDir)) {
     ctx.translate(1 - offset, 0)
@@ -170,7 +170,7 @@ function front(thisDir, prevDir, offset) {
   ctx.restore()
 }
 
-function body(thisDir, prevDir, nextDir, offset) {
+function body(thisDir, { prevDir, nextDir, offset }) {
   back(thisDir, nextDir, offset)
   front(thisDir, prevDir, offset)
 }
@@ -209,19 +209,23 @@ function printPaused() {
 function draw(world, offset) {
   ctx.clearRect(0, 0, W, H)
   renderShape(head, world.head,
-              world.squares[world.squares.length - 2].dir,
-              offset)
+              { nextDir: world.squares[world.squares.length - 2].dir,
+                offset: offset })
   for (let i = 1; i < world.squares.length - 1; i++) {
     renderShape(body, world.squares[i],
-                world.squares[i+1].dir,
-                world.squares[i-1].dir, offset)
+                { prevDir: world.squares[i+1].dir,
+                  nextDir: world.squares[i-1].dir,
+                  offset: offset })
   }
-  renderShape(tail, world.tail, world.squares[1].dir, offset)
+  renderShape(tail, world.tail,
+              { prevDir: world.squares[1].dir, offset: offset })
   renderShape(food, world.food)
   printScore(world.score)
 }
 
-function renderShape(shape, square, prevDir, nextDir, offset) {
+function renderShape(shape, square,
+           { prevDir = null, nextDir = null,
+             offset = 0 } = {offset : 0}) {
   const x = (square.loc.x / X_BLOCKS) * W
   const y = (square.loc.y / Y_BLOCKS) * H
 
@@ -231,7 +235,7 @@ function renderShape(shape, square, prevDir, nextDir, offset) {
   ctx.transform(square.dir.x, square.dir.y,
                 square.dir.y, square.dir.x, 0, 0)
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
-  shape(square.dir, prevDir, nextDir, offset)
+  shape(square.dir, { prevDir, nextDir, offset })
   ctx.restore()
 }
 
