@@ -64,12 +64,13 @@ function tail(curDir, { prevDir, offset }) {
   if (straight(prevDir, curDir)) {
     ctx.translate(-offset, 0)
   } else {
-    const sum = thisDir.add(prevDir).x + thisDir.add(prevDir).y
-    const sign = sum ? -1 : 1
-    ctx.translate(1/2, -sign/2)
-
-    ctx.rotate(sign * (offset - 1) * Math.PI /2)
-    ctx.translate(-1/2, sign/2)
+    const sign = (clockwise(prevDir, curDir)) ? -1 : 1
+    ctx.translate(-1/2, -sign / 2)
+    ctx.rotate(sign * offset * Math.PI / 2)
+    ctx.translate(1/2, sign / 2)
+    // because tail does not change
+    // direction until the end of the step
+    ctx.rotate(-sign * Math.PI / 2)
   }
 
   ctx.beginPath()
