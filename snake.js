@@ -66,6 +66,10 @@ class Snake {
     this.squares.push(new Square(
       this.head.loc.add(this.direction), this.direction))
   }
+
+  get oldTail() {
+    return this.tail.loc.add(this.tail.dir.neg())
+  }
 }
 
 class World {
@@ -113,7 +117,7 @@ class World {
       food = this.getRandomSquare()
     } while (this.snake.squares.some(
       square => square.equals(food.loc)
-    ))
+    ) || this.snake.oldTail.equals(food.loc))
     return food
   }
 
