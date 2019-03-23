@@ -57,6 +57,15 @@ class Snake {
       || borders.some(
       square => square.equals(this.head.loc))
   }
+
+  advance(movesQueue) {
+    if (movesQueue.length > 0) {
+      this.direction = movesQueue.shift()
+    }
+
+    this.squares.push(new Square(
+      this.head.loc.add(this.direction), this.direction))
+  }
 }
 
 class World {
@@ -108,14 +117,6 @@ class World {
     return food
   }
 
-  advance() {
-    if (this.movesQueue.length > 0) {
-      this.snake.direction = this.movesQueue.shift()
-    }
-    this.snake.squares.push(new Square(
-      this.head.loc.add(this.dir), this.dir))
-  }
-
   maybeEat() {
     if (this.head.loc.equals(this.food.loc)) {
      this.score++
@@ -136,7 +137,7 @@ class World {
 
   step() {
     this.maybeCollide()
-    this.advance()
+    this.snake.advance(this.movesQueue)
     this.maybeEat()
   }
 
