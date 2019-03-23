@@ -11,7 +11,7 @@ function straight(a, b) {
 function head(thisDir, { nextDir, offset }) {
   ctx.save()
   if (straight(thisDir, nextDir)) {
-    ctx.translate(1 - offset, 0)
+    ctx.translate(-offset, 0)
   } else {
     ctx.translate(-1/2, -1/2)
     ctx.rotate(offset * Math.PI / 2)
@@ -57,7 +57,7 @@ function head(thisDir, { nextDir, offset }) {
 function tail(thisDir, { prevDir, offset }) {
   ctx.save()
   if (straight(thisDir, prevDir)) {
-    ctx.translate(1 - offset, 0)
+    ctx.translate(-offset, 0)
   } else {
     const sum = thisDir.add(prevDir).x + thisDir.add(prevDir).y
     const sign = sum ? -1 : 1
@@ -128,10 +128,10 @@ function back(thisDir, nextDir, offset) {
 
   if (straight(thisDir, nextDir)) {
     ctx.beginPath()
-    ctx.moveTo(1/2 - offset, -1/2)
-    ctx.lineTo(1/2, -1/2)
-    ctx.moveTo(1/2 - offset, 1/2)
-    ctx.lineTo(1/2, 1/2)
+    ctx.moveTo(-1/2 - offset, -1/2)
+    ctx.lineTo(-1/2, -1/2)
+    ctx.moveTo(-1/2 - offset, 1/2)
+    ctx.lineTo(-1/2, 1/2)
     ctx.stroke()
     //stripe()
   } else {
@@ -150,10 +150,10 @@ function front(thisDir, prevDir, offset) {
 
   if (straight(thisDir, prevDir)) {
     ctx.beginPath()
-    ctx.moveTo(1/2, -1/2)
-    ctx.lineTo(3/2 - offset, -1/2)
-    ctx.moveTo(1/2, 1/2)
-    ctx.lineTo(3/2 - offset, 1/2)
+    ctx.moveTo(-1/2, -1/2)
+    ctx.lineTo(1/2 - offset, -1/2)
+    ctx.moveTo(-1/2, 1/2)
+    ctx.lineTo(1/2 - offset, 1/2)
     ctx.stroke()
     //stripe()
   } else {
@@ -180,8 +180,6 @@ function body() {
 }
 
 function food() {
-  ctx.save()
-  ctx.translate(1, 0)
   ctx.beginPath()
   ctx.moveTo(0, -1/2)
   ctx.lineTo(1/2, 0)
@@ -189,7 +187,6 @@ function food() {
   ctx.lineTo(-1/2, 0)
   ctx.closePath()
   ctx.stroke()
-  ctx.restore()
 }
 
 function printScore(score) {
@@ -240,8 +237,7 @@ function renderShape(shape, square, {
   const y = (square.loc.y / Y_BLOCKS) * H
 
   ctx.save()
-  ctx.translate(x + BLOCK_SIDE * (1/2 - square.dir.x),
-                y + BLOCK_SIDE * (1/2 - square.dir.y))
+  ctx.translate(x + BLOCK_SIDE / 2, y + BLOCK_SIDE / 2)
   rotate(square.dir)
   ctx.scale(BLOCK_SIDE, BLOCK_SIDE)
   shape(square.dir, { prevDir, nextDir, offset })
