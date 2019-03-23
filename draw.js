@@ -12,16 +12,25 @@ function clockwise(cur, next) {
   return next.x - cur.y + next.y + cur.x == 0
 }
 
-function head(curDir, { nextDir, offset }) {
-  ctx.save()
-  if (straight(curDir, nextDir)) {
+function slideOrRotate(dir1, dir2, offset, isTail) {
+  if (straight(dir1, dir2)) {
     ctx.translate(-offset, 0)
   } else {
-    const sign = (clockwise(curDir, nextDir)) ? -1 : 1
+    const sign = (clockwise(dir1, dir2)) ? -1 : 1
     ctx.translate(-1/2, -sign / 2)
     ctx.rotate(sign * offset * Math.PI / 2)
     ctx.translate(1/2, sign / 2)
+    if (isTail) {
+      // because tail does not change
+      // direction until the end of the step
+      ctx.rotate(-sign * Math.PI / 2)
+    }
   }
+}
+
+function head(curDir, { nextDir, offset }) {
+  ctx.save()
+  slideOrRotate(curDir, nextDir, offset, false)
 
   ctx.beginPath()
   ctx.moveTo(-1/2, -1/2)
@@ -61,17 +70,7 @@ function head(curDir, { nextDir, offset }) {
 
 function tail(curDir, { prevDir, offset }) {
   ctx.save()
-  if (straight(prevDir, curDir)) {
-    ctx.translate(-offset, 0)
-  } else {
-    const sign = (clockwise(prevDir, curDir)) ? -1 : 1
-    ctx.translate(-1/2, -sign / 2)
-    ctx.rotate(sign * offset * Math.PI / 2)
-    ctx.translate(1/2, sign / 2)
-    // because tail does not change
-    // direction until the end of the step
-    ctx.rotate(-sign * Math.PI / 2)
-  }
+  slideOrRotate(prevDir, curDir, offset, true)
 
   ctx.beginPath()
   ctx.arc(-1/3, -3/10, 1/5,
