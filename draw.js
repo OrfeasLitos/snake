@@ -8,14 +8,19 @@ function straight(a, b) {
   return a.equals(b)
 }
 
+function clockwise(cur, next) {
+  return next.x - cur.y + next.y + cur.x == 0
+}
+
 function head(curDir, { nextDir, offset }) {
   ctx.save()
   if (straight(curDir, nextDir)) {
     ctx.translate(-offset, 0)
   } else {
-    ctx.translate(-1/2, -1/2)
-    ctx.rotate(offset * Math.PI / 2)
-    ctx.translate(1/2, 1/2)
+    const sign = (clockwise(curDir, nextDir)) ? -1 : 1
+    ctx.translate(-1/2, -sign / 2)
+    ctx.rotate(sign * offset * Math.PI / 2)
+    ctx.translate(1/2, sign / 2)
   }
 
   ctx.beginPath()
