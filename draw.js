@@ -194,9 +194,11 @@ function printScore(score) {
 }
 
 function printPaused() {
+  const oldTextAlign = ctx.textAlign
+
   ctx.textAlign = 'center'
   ctx.fillText('Paused', W / 2, H / 2)
-  ctx.textAlign = 'left'
+  ctx.textAlign = oldTextAlign
 }
 
 // TODO: don't jump when getting longer
@@ -245,6 +247,9 @@ function renderShape(shape, square, {
 }
 
 function gameOver(score, easterEgg) {
+  const oldFillStyle = ctx.fillStyle
+  const oldTextAlign = ctx.textAlign
+
   ctx.textAlign = 'center'
   ctx.fillStyle = 'red'
 
@@ -253,6 +258,6 @@ function gameOver(score, easterEgg) {
   ctx.fillText(msg, W / 2, (H - 2 * TEXTSIZE) / 2)
   ctx.fillText('Press N to restart', W / 2, (H + 2 * TEXTSIZE) / 2)
 
-  ctx.fillStyle = 'black'
-  ctx.textAlign = 'left'
+  ctx.fillStyle = oldFillStyle
+  ctx.textAlign = oldTextAlign
 }
