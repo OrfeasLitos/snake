@@ -203,18 +203,20 @@ function printPaused() {
 
 // TODO: don't jump when getting longer
 function draw(world, offset) {
+  const squares = world.snake.squares
+
   ctx.clearRect(0, 0, W, H)
   renderShape(head, world.head,
-              { nextDir: world.squares[world.squares.length - 2].dir,
+              { nextDir: squares[squares.length - 2].dir,
                 offset: offset })
-  for (let i = 1; i < world.squares.length - 1; i++) {
-    renderShape(body, world.squares[i],
-                { prevDir: world.squares[i+1].dir,
-                  nextDir: world.squares[i-1].dir,
+  for (let i = 1; i < squares.length - 1; i++) {
+    renderShape(body, squares[i],
+                { prevDir: squares[i+1].dir,
+                  nextDir: squares[i-1].dir,
                   offset: offset })
   }
   renderShape(tail, world.tail,
-              { prevDir: world.squares[1].dir, offset: offset })
+              { prevDir: squares[1].dir, offset: offset })
   renderShape(food, world.food)
   printScore(world.score)
 }

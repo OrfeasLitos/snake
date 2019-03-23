@@ -27,10 +27,41 @@ canvas.style.borderWidth = `${border + (MAX_HEIGHT - H) / 2}px
                             ${border + (MAX_HEIGHT - H) / 2}px
                             ${border}px`
 
+class Snake {
+  constructor(initSize, x, y) {
+    this.direction = new Vector(1, 0)
+
+    this.squares = []
+    for (let i = initSize - 1; i >= 0; i--) {
+      this.squares.push(new Square(
+        new Vector(Math.floor(x / 2) - i, Math.floor(y / 2)),
+        this.direction.clone()))
+    }
+  }
+
+  get head() {
+    return this.squares[this.squares.length - 1]
+  }
+
+  set head(square) {
+    this.squares[this.squares.length - 1] = square
+  }
+
+  get tail() {
+    return this.squares[0]
+  }
+
+  collides(borders) {
+    return this.squares.slice(0, -1).some(
+      square => square.equals(this.head.loc))
+      || borders.some(
+      square => square.equals(this.head.loc))
+  }
+}
+
 class World {
   constructor() {
-    this.squares = []
-    this.direction = new Vector(1, 0)
+    this.snake = new Snake(INIT_SNAKE_SIZE, X_BLOCKS, Y_BLOCKS)
     this.movesQueue = []
     this.score = 0
     this.gameOver = false
@@ -46,26 +77,19 @@ class World {
       this.borders.push(new Vector(X_BLOCKS, i))
     }
 
-    for (let i = INIT_SNAKE_SIZE - 1; i >= 0; i--) {
-      this.squares.push(new Square(
-        new Vector(
-          Math.floor(X_BLOCKS / 2) - i,
-          Math.floor(Y_BLOCKS / 2)),
-        this.dir.clone()))
-    }
     this.food = this.produceFood()
   }
 
   get head() {
-    return this.squares[this.squares.length - 1]
+    return this.snake.head
   }
 
   set head(square) {
-    this.squares[this.squares.length - 1] = square
+    this.snake.head = square
   }
 
   get tail() {
-    return this.squares[0]
+    return this.snake.tail
   }
 
   getRandomSquare() {
@@ -78,7 +102,7 @@ class World {
     let food
     do {
       food = this.getRandomSquare()
-    } while (this.squares.some(
+    } while (this.snake.squares.some(
       square => square.equals(food.loc)
     ))
     return food
@@ -86,9 +110,9 @@ class World {
 
   advance() {
     if (this.movesQueue.length > 0) {
-      this.direction = this.movesQueue.shift()
+      this.snake.direction = this.movesQueue.shift()
     }
-    this.squares.push(new Square(
+    this.snake.squares.push(new Square(
       this.head.loc.add(this.dir), this.dir))
   }
 
@@ -97,19 +121,12 @@ class World {
      this.score++
      this.food = this.produceFood()
     } else { // no food, remove last square
-      this.squares.shift()
+      this.snake.squares.shift()
     }
   }
 
-  collides() {
-    return this.squares.slice(0, -1).some(
-      square => square.equals(this.head.loc))
-      || this.borders.some(
-      square => square.equals(this.head.loc))
-  }
-
   maybeCollide() {
-    if (this.collides()) {
+    if (this.snake.collides(this.borders)) {
       this.gameOver = true
       if (this.tail.equals(this.head.loc)) {
         this.easterEgg = true
@@ -126,7 +143,7 @@ class World {
   set dir(newDir) {
     const backwards = (newDir) => {
       const prevDir = (this.movesQueue.length === 0) ?
-        this.dir : this.movesQueue[0]
+        this.snake.direction : this.movesQueue[0]
 
       return prevDir.add(newDir).isZero()
     }
@@ -144,7 +161,7 @@ class World {
   }
 
   get dir() {
-    return this.direction
+    return this.snake.direction
   }
 
   togglePause(maxTime) {
