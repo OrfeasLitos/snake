@@ -8,9 +8,9 @@ function straight(a, b) {
   return a.equals(b)
 }
 
-function head(thisDir, { nextDir, offset }) {
+function head(curDir, { nextDir, offset }) {
   ctx.save()
-  if (straight(thisDir, nextDir)) {
+  if (straight(curDir, nextDir)) {
     ctx.translate(-offset, 0)
   } else {
     ctx.translate(-1/2, -1/2)
@@ -54,9 +54,9 @@ function head(thisDir, { nextDir, offset }) {
   ctx.restore()
 }
 
-function tail(thisDir, { prevDir, offset }) {
+function tail(curDir, { prevDir, offset }) {
   ctx.save()
-  if (straight(thisDir, prevDir)) {
+  if (straight(prevDir, curDir)) {
     ctx.translate(-offset, 0)
   } else {
     const sum = thisDir.add(prevDir).x + thisDir.add(prevDir).y
@@ -123,10 +123,10 @@ function lowerCorner() {
   ctx.fill()
 }
 
-function back(thisDir, nextDir, offset) {
+function back(curDir, nextDir, offset) {
   ctx.save()
 
-  if (straight(thisDir, nextDir)) {
+  if (straight(curDir, nextDir)) {
     ctx.beginPath()
     ctx.moveTo(-1/2 - offset, -1/2)
     ctx.lineTo(-1/2, -1/2)
@@ -145,10 +145,10 @@ function back(thisDir, nextDir, offset) {
   ctx.restore()
 }
 
-function front(thisDir, prevDir, offset) {
+function front(curDir, prevDir, offset) {
   ctx.save()
 
-  if (straight(thisDir, prevDir)) {
+  if (straight(curDir, prevDir)) {
     ctx.beginPath()
     ctx.moveTo(-1/2, -1/2)
     ctx.lineTo(1/2 - offset, -1/2)
@@ -167,9 +167,9 @@ function front(thisDir, prevDir, offset) {
   ctx.restore()
 }
 
-function body(thisDir, { prevDir, nextDir, offset }) {
-  back(thisDir, nextDir, offset)
-  front(thisDir, prevDir, offset)
+function body(curDir, { prevDir, nextDir, offset }) {
+  back(curDir, nextDir, offset)
+  front(curDir, prevDir, offset)
 }
 
 function body() {
