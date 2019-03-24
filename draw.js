@@ -140,10 +140,13 @@ function back(curDir, nextDir, offset) {
     ctx.stroke()
     //stripe()
   } else {
+    const sign = (clockwise(curDir, nextDir)) ? -1 : 1
+    ctx.translate(-1, 0)
     ctx.beginPath()
-    ctx.moveTo(1/2, -1/2)
-    ctx.arc(1/2, 1/2, 1, -Math.PI / 2,
-            -Math.PI * (1 + offset) / 2, true)
+    ctx.moveTo(1/2, sign / 2)
+    ctx.arc(1/2, -sign / 2, 1, sign * Math.PI / 2,
+            sign * Math.PI * (offset - 3) / 2,
+            clockwise(curDir, nextDir))
     ctx.stroke()
   }
 
@@ -162,10 +165,12 @@ function front(curDir, prevDir, offset) {
     ctx.stroke()
     //stripe()
   } else {
+    const sign = (clockwise(prevDir, curDir)) ? -1 : 1
     ctx.beginPath()
-    ctx.moveTo(1/2, 1/2)
-    ctx.arc(1/2, -1/2, 1, Math.PI / 2,
-            Math.PI * offset / 2, true)
+    ctx.moveTo(-1/2, sign / 2)
+    ctx.arc(-1/2, -sign / 2, 1,
+            sign * Math.PI / 2, sign * Math.PI * offset / 2,
+            !clockwise(prevDir, curDir))
     ctx.stroke()
   }
 
