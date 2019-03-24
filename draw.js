@@ -182,13 +182,6 @@ function body(curDir, { prevDir, nextDir, offset }) {
   front(curDir, prevDir, offset)
 }
 
-function body() {
-  box()
-  stripe()
-  upperCorner()
-  lowerCorner()
-}
-
 function food() {
   ctx.beginPath()
   ctx.moveTo(0, -1/2)
