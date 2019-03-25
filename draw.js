@@ -138,14 +138,14 @@ function back(curDir, nextDir, offset) {
     ctx.moveTo(-1/2 - offset, 1/2)
     ctx.lineTo(-1/2, 1/2)
     ctx.stroke()
-    //stripe()
+  //  stripe()
   } else {
     const sign = (clockwise(curDir, nextDir)) ? -1 : 1
     ctx.translate(-1, 0)
     ctx.beginPath()
     ctx.moveTo(1/2, sign / 2)
     ctx.arc(1/2, -sign / 2, 1, sign * Math.PI / 2,
-            sign * Math.PI * (offset - 3) / 2,
+            sign * Math.PI * (offset + 1) / 2,
             clockwise(curDir, nextDir))
     ctx.stroke()
   }
@@ -153,33 +153,51 @@ function back(curDir, nextDir, offset) {
   ctx.restore()
 }
 
+function frontBody(offset) {
+  ctx.beginPath()
+  ctx.moveTo(-1/2, -1/2)
+  ctx.lineTo(1/2 - offset, -1/2)
+  ctx.moveTo(-1/2, 1/2)
+  ctx.lineTo(1/2 - offset, 1/2)
+  ctx.stroke()
+}
+
+function frontTurn(curDir, prevDir, offset) {
+  const sign = (clockwise(prevDir, curDir)) ? -1 : 1
+  ctx.beginPath()
+  ctx.moveTo(-1/2, sign / 2)
+  if (offset) {
+    ctx.arc(-1/2, -sign / 2, 1,
+            sign * Math.PI / 2, sign * Math.PI * offset / 2,
+            !clockwise(prevDir, curDir))
+  }
+  ctx.stroke()
+}
+
 function front(curDir, prevDir, offset) {
   ctx.save()
 
   if (straight(curDir, prevDir)) {
-    ctx.beginPath()
-    ctx.moveTo(-1/2, -1/2)
-    ctx.lineTo(1/2 - offset, -1/2)
-    ctx.moveTo(-1/2, 1/2)
-    ctx.lineTo(1/2 - offset, 1/2)
-    ctx.stroke()
-    //stripe()
+    frontBody(offset)
+    //frontStripe(offset)
   } else {
-    const sign = (clockwise(prevDir, curDir)) ? -1 : 1
-    ctx.beginPath()
-    ctx.moveTo(-1/2, sign / 2)
-    ctx.arc(-1/2, -sign / 2, 1,
-            sign * Math.PI / 2, sign * Math.PI * offset / 2,
-            !clockwise(prevDir, curDir))
-    ctx.stroke()
+    frontTurn(curDir, prevDir, offset)
   }
 
   ctx.restore()
 }
 
+function appear(curDir, { prevDir, offset }) {
+  if (straight(curDir, prevDir)) {
+    frontBody(offset)
+  } else {
+    frontTurn(curDir, prevDir, offset)
+  }
+}
+
 function body(curDir, { prevDir, nextDir, offset }) {
-  back(curDir, nextDir, offset)
   front(curDir, prevDir, offset)
+  back(curDir, nextDir, offset)
 }
 
 function food() {
@@ -204,7 +222,6 @@ function printPaused() {
   ctx.textAlign = oldTextAlign
 }
 
-// TODO: don't jump when getting longer
 function draw(world, offset) {
   const squares = world.snake.squares
 
@@ -212,14 +229,31 @@ function draw(world, offset) {
   renderShape(head, world.head,
               { nextDir: squares[squares.length - 2].dir,
                 offset: offset })
-  for (let i = 1; i < squares.length - 1; i++) {
-    renderShape(body, squares[i],
-                { prevDir: squares[i+1].dir,
-                  nextDir: squares[i-1].dir,
+  if (world.snake.justAte) {
+    const second = squares.length - 2
+    renderShape(appear, squares[second],
+                { prevDir: squares[second + 1].dir,
+                  nextDir: squares[second - 1].dir,
                   offset: offset })
+    for (let i = 1; i < squares.length - 2; i++) {
+      renderShape(body, squares[i],
+                  { prevDir: squares[i+1].dir,
+                    nextDir: squares[i-1].dir,
+                    offset: 0.00001 })
+    }
+    renderShape(tail, world.tail,
+                { prevDir: squares[1].dir, offset: 0.00001 })
+  } else {
+    for (let i = 1; i < squares.length - 1; i++) {
+      renderShape(body, squares[i],
+                  { prevDir: squares[i+1].dir,
+                    nextDir: squares[i-1].dir,
+                    offset: offset })
+    }
+    renderShape(tail, world.tail,
+                { prevDir: squares[1].dir, offset: offset })
   }
-  renderShape(tail, world.tail,
-              { prevDir: squares[1].dir, offset: offset })
+
   renderShape(food, world.food)
   printScore(world.score)
 }

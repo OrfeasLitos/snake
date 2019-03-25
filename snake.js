@@ -30,6 +30,7 @@ canvas.style.borderWidth = `${border + (MAX_HEIGHT - H) / 2}px
 class Snake {
   constructor(initSize, x, y) {
     this.direction = new Vector(1, 0)
+    this.justAte = false
 
     this.squares = []
     for (let i = initSize - 1; i >= 0; i--) {
@@ -69,6 +70,15 @@ class Snake {
 
   get oldTail() {
     return this.tail.loc.add(this.tail.dir.neg())
+  maybeEat(foodLoc) {
+    if (this.head.loc.equals(foodLoc)) {
+      this.justAte = true
+      return true
+    }
+    this.justAte = false
+    // no food, remove last square
+    this.squares.shift()
+    return false
   }
 }
 
@@ -117,16 +127,14 @@ class World {
       food = this.getRandomSquare()
     } while (this.snake.squares.some(
       square => square.equals(food.loc)
-    ) || this.snake.oldTail.equals(food.loc))
+    ) || this.snake.oldTail.loc.equals(food.loc))
     return food
   }
 
   maybeEat() {
-    if (this.head.loc.equals(this.food.loc)) {
+    if (this.snake.maybeEat(this.food.loc)) {
      this.score++
      this.food = this.produceFood()
-    } else { // no food, remove last square
-      this.snake.squares.shift()
     }
   }
 
