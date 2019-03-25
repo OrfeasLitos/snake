@@ -31,6 +31,7 @@ class Snake {
   constructor(initSize, x, y) {
     this.direction = new Vector(1, 0)
     this.justAte = false
+    this.oldTail = null
 
     this.squares = []
     for (let i = initSize - 1; i >= 0; i--) {
@@ -38,6 +39,10 @@ class Snake {
         new Vector(Math.floor(x / 2) - i, Math.floor(y / 2)),
         this.direction.clone()))
     }
+
+    this.oldTail = new Square(
+                     this.tail.loc.add(this.tail.dir.neg()),
+                     this.tail.dir)
   }
 
   get head() {
@@ -68,8 +73,6 @@ class Snake {
       this.head.loc.add(this.direction), this.direction))
   }
 
-  get oldTail() {
-    return this.tail.loc.add(this.tail.dir.neg())
   maybeEat(foodLoc) {
     if (this.head.loc.equals(foodLoc)) {
       this.justAte = true
@@ -77,7 +80,7 @@ class Snake {
     }
     this.justAte = false
     // no food, remove last square
-    this.squares.shift()
+    this.oldTail = this.squares.shift()
     return false
   }
 }
