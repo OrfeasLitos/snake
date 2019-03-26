@@ -106,16 +106,8 @@ class World {
     this.food = this.produceFood()
   }
 
-  get head() {
-    return this.snake.head
-  }
-
   set head(square) {
     this.snake.head = square
-  }
-
-  get tail() {
-    return this.snake.tail
   }
 
   getRandomSquare() {
@@ -144,7 +136,7 @@ class World {
   maybeCollide() {
     if (this.snake.collides(this.borders)) {
       this.gameOver = true
-      if (this.tail.equals(this.head.loc)) {
+      if (this.snake.tail.equals(this.snake.head.loc)) {
         this.easterEgg = true
       }
     }

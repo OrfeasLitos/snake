@@ -284,7 +284,7 @@ function draw(world, offset) {
   const squares = world.snake.squares
 
   ctx.clearRect(0, 0, W, H)
-  renderShape(head, world.head,
+  renderShape(head, world.snake.head,
               { nextDir: squares[squares.length - 2].dir,
                 offset: offset })
   if (world.snake.justAte) {
@@ -308,7 +308,7 @@ function draw(world, offset) {
                     nextDir: squares[i-1].dir,
                     offset: offset })
     }
-    renderShape(tail, world.tail,
+    renderShape(tail, world.snake.tail,
                 { prevDir: squares[1].dir, offset: offset })
   }
 
