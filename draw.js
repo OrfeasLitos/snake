@@ -272,8 +272,9 @@ function food() {
   ctx.stroke()
 }
 
-function printScore(score) {
+function printInfo(score) {
   ctx.fillText(`Score: ${score}`, W - TEXTSIZE * 6, TEXTSIZE)
+  ctx.fillText(`Press P to Pause`, TEXTSIZE, TEXTSIZE)
 }
 
 function printPaused() {
@@ -317,7 +318,7 @@ function draw(world, offset) {
   }
 
   renderShape(food, world.food)
-  printScore(world.score)
+  printInfo(world.score)
 }
 
 function rotate(dir) {
