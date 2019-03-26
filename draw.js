@@ -75,9 +75,13 @@ function tail(curDir, { prevDir, offset }) {
   ctx.beginPath()
   ctx.arc(-1/3, -3/10, 1/5,
           Math.PI / 2, Math.PI * 3 / 2)
+  ctx.fill()
+  ctx.beginPath()
   ctx.moveTo(-1/3, 1/2)
   ctx.arc(-1/3, 3/10, 1/5,
           Math.PI / 2, Math.PI * 3 / 2)
+  ctx.fill()
+  ctx.beginPath()
   ctx.moveTo(1/2, -1/2)
   ctx.lineTo(-1/3, -1/2)
   ctx.moveTo(-1/3, -1/10)
