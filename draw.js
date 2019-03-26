@@ -128,60 +128,113 @@ function lowerCorner() {
   ctx.fill()
 }
 
+function backStraight(offset) {
+  ctx.beginPath()
+  ctx.moveTo(-1/2 - offset, -1/2)
+  ctx.lineTo(-1/2, -1/2)
+  ctx.moveTo(-1/2 - offset, 1/2)
+  ctx.lineTo(-1/2, 1/2)
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.moveTo(-1/2 - offset - 1 / BLOCK_SIDE, -1/2)
+  ctx.lineTo(-1/2 - offset - 1 / BLOCK_SIDE, 1/2)
+  ctx.lineTo(-1/2 + 1 / BLOCK_SIDE, 1/2)
+  ctx.lineTo(-1/2 + 1 / BLOCK_SIDE, -1/2)
+  ctx.closePath()
+  ctx.clip()
+}
+
+function backTurn(curDir, nextDir, offset) {
+  const sign = (clockwise(curDir, nextDir)) ? -1 : 1
+  ctx.translate(-1, 0)
+  ctx.beginPath()
+  ctx.moveTo(1/2, sign / 2)
+  ctx.arc(1/2, -sign / 2, 1, sign * Math.PI / 2,
+          sign * Math.PI * (offset + 1) / 2,
+          clockwise(curDir, nextDir))
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.moveTo(1/2, -sign / 2)
+  ctx.arc(1/2, -sign / 2, 1 + 1 / BLOCK_SIDE,
+          sign * Math.PI / 2,
+          sign * Math.PI * (offset + 1) / 2,
+          clockwise(curDir, nextDir))
+  ctx.closePath()
+  ctx.clip()
+}
+
 function back(curDir, nextDir, offset) {
   ctx.save()
 
   if (straight(curDir, nextDir)) {
-    ctx.beginPath()
-    ctx.moveTo(-1/2 - offset, -1/2)
-    ctx.lineTo(-1/2, -1/2)
-    ctx.moveTo(-1/2 - offset, 1/2)
-    ctx.lineTo(-1/2, 1/2)
-    ctx.stroke()
-  //  stripe()
+    backStraight(offset)
+    ctx.translate(-offset, 0)
+    stripe()
+    upperCorner()
+    lowerCorner()
   } else {
-    const sign = (clockwise(curDir, nextDir)) ? -1 : 1
-    ctx.translate(-1, 0)
-    ctx.beginPath()
-    ctx.moveTo(1/2, sign / 2)
-    ctx.arc(1/2, -sign / 2, 1, sign * Math.PI / 2,
-            sign * Math.PI * (offset + 1) / 2,
-            clockwise(curDir, nextDir))
-    ctx.stroke()
+    backTurn(curDir, nextDir, offset)
+    stripe()
+    upperCorner()
+    lowerCorner()
   }
 
   ctx.restore()
 }
 
-function frontBody(offset) {
+function frontStraight(offset) {
   ctx.beginPath()
   ctx.moveTo(-1/2, -1/2)
   ctx.lineTo(1/2 - offset, -1/2)
   ctx.moveTo(-1/2, 1/2)
   ctx.lineTo(1/2 - offset, 1/2)
   ctx.stroke()
+
+  ctx.beginPath()
+  ctx.moveTo(-1/2 - 1 / BLOCK_SIDE, -1/2)
+  ctx.lineTo(1/2 - offset + 1 / BLOCK_SIDE, -1/2)
+  ctx.lineTo(1/2 - offset + 1 / BLOCK_SIDE, 1/2)
+  ctx.lineTo(-1/2 - 1 / BLOCK_SIDE, 1/2)
+  ctx.closePath()
+  ctx.clip()
 }
 
 function frontTurn(curDir, prevDir, offset) {
   const sign = (clockwise(prevDir, curDir)) ? -1 : 1
   ctx.beginPath()
   ctx.moveTo(-1/2, sign / 2)
-  if (offset) {
-    ctx.arc(-1/2, -sign / 2, 1,
-            sign * Math.PI / 2, sign * Math.PI * offset / 2,
-            !clockwise(prevDir, curDir))
-  }
+  ctx.arc(-1/2, -sign / 2, 1,
+          sign * Math.PI / 2, sign * Math.PI * offset / 2,
+          !clockwise(prevDir, curDir))
   ctx.stroke()
+
+  ctx.beginPath()
+  ctx.moveTo(-1/2, -sign / 2)
+  ctx.arc(-1/2, -sign / 2, 1 + 1 / BLOCK_SIDE,
+          sign * Math.PI / 2,
+          sign * Math.PI * (offset - 1 / BLOCK_SIDE) / 2,
+          !clockwise(prevDir, curDir))
+  ctx.closePath()
+  ctx.clip()
 }
 
 function front(curDir, prevDir, offset) {
   ctx.save()
 
   if (straight(curDir, prevDir)) {
-    frontBody(offset)
-    //frontStripe(offset)
+    frontStraight(offset)
+    ctx.translate(-offset, 0)
+    stripe()
+    upperCorner()
+    lowerCorner()
   } else {
     frontTurn(curDir, prevDir, offset)
+    slideOrRotate(prevDir, curDir, offset, true)
+    stripe()
+    upperCorner()
+    lowerCorner()
   }
 
   ctx.restore()
@@ -189,9 +242,14 @@ function front(curDir, prevDir, offset) {
 
 function appear(curDir, { prevDir, offset }) {
   if (straight(curDir, prevDir)) {
-    frontBody(offset)
+    frontStraight(offset)
+    ctx.translate(-offset, 0)
+    stripe()
+    upperCorner()
+    lowerCorner()
   } else {
     frontTurn(curDir, prevDir, offset)
+    stripe()
   }
 }
 
@@ -239,10 +297,10 @@ function draw(world, offset) {
       renderShape(body, squares[i],
                   { prevDir: squares[i+1].dir,
                     nextDir: squares[i-1].dir,
-                    offset: 0.00001 })
+                    offset: 1 / BLOCK_SIDE })
     }
-    renderShape(tail, world.tail,
-                { prevDir: squares[1].dir, offset: 0.00001 })
+    renderShape(tail, world.snake.tail,
+                { prevDir: squares[1].dir, offset: 1 / BLOCK_SIDE })
   } else {
     for (let i = 1; i < squares.length - 1; i++) {
       renderShape(body, squares[i],
