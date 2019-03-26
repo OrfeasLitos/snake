@@ -1,7 +1,7 @@
 // TODO: separate snake in new object
 const INIT_SNAKE_SIZE = 4
-const X_BLOCKS = 100
-const SPEED = 0.005
+const X_BLOCKS = 20
+const SPEED = 0.007
 
 if (INIT_SNAKE_SIZE < 2) {
   throw new RangeError("Initial snake size should be at least 2")
