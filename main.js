@@ -9,7 +9,7 @@ function main() {
         world.step()
       }
       gameTime = nextGameTime
-      draw(world, 1 - gameTime)
+      draw(worldView, 1 - gameTime)
     }
 
     prev = now
@@ -17,7 +17,7 @@ function main() {
     if (!world.gameOver) {
       requestAnimationFrame(run)
     } else {
-      gameOver(world.score, world.easterEgg)
+      worldView.gameOver()
     }
   }
 
@@ -27,6 +27,7 @@ function main() {
 }
 
 let world = new World()
+let worldView = new WorldView(world, new SnakeView(world.snake))
 
 const KEY_N = 78
 const KEY_P = 80
@@ -55,7 +56,7 @@ document.onkeydown = (e) => {
 
     world.togglePause(1 / SPEED)
     if (world.isPaused) {
-      printPaused()
+      worldView.printPaused()
     }
   } else if (key === KEY_N) {
     if (!world.gameOver) {
@@ -64,6 +65,7 @@ document.onkeydown = (e) => {
 
     // New game
     world = new World()
+    worldView = new WorldView(world, new SnakeView(world.snake))
     main()
   } else if (KEY_ARROWS.includes(key)) {
     if (world.isPaused) {
