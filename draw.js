@@ -286,8 +286,7 @@ class WorldView {
   }
 
   printInfo() {
-    const score = this.world.score
-    ctx.fillText(`Score: ${score}`, W - TEXTSIZE * 6, TEXTSIZE)
+    ctx.fillText(`Score: ${this.world.score}`, W - TEXTSIZE * 6, TEXTSIZE)
     ctx.fillText(`Press P to Pause`, TEXTSIZE, TEXTSIZE)
   }
 
